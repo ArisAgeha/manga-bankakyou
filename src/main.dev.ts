@@ -14,7 +14,7 @@ import path from 'path';
 import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
+import MenuBuilder from './main/menu';
 
 export default class AppUpdater {
     constructor() {
@@ -51,6 +51,8 @@ const installExtensions = async () => {
         .catch(console.log);
 };
 
+const initService = async () => {};
+
 const createWindow = async () => {
     if (
         process.env.NODE_ENV === 'development' ||
@@ -69,11 +71,12 @@ const createWindow = async () => {
 
     mainWindow = new BrowserWindow({
         show: false,
-        width: 1024,
-        height: 728,
+        width: 1600,
+        height: 900,
         icon: getAssetPath('icon.png'),
         webPreferences: {
             nodeIntegration: true,
+            webSecurity: false,
         },
     });
 
@@ -123,10 +126,12 @@ app.on('window-all-closed', () => {
     }
 });
 
-app.whenReady().then(createWindow).catch(console.log);
+app.whenReady().then(initService).then(createWindow).catch(console.log);
 
 app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) createWindow();
 });
+
+export { mainWindow };

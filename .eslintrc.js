@@ -1,8 +1,14 @@
 module.exports = {
-    extends: 'erb',
+    extends: ['erb'],
     rules: {
         // A temporary hack related to IDE not resolving correct package.json
         'import/no-extraneous-dependencies': 'off',
+        'import/prefer-default-export': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+        'class-methods-use-this': 'off',
+        '@typescript-eslint/no-useless-constructor': 'off',
+        'no-console': 'off',
+        '@typescript-eslint/no-empty-function': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,
