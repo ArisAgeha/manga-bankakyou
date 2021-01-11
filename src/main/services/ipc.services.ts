@@ -1,9 +1,9 @@
 import { injectable } from '@/common/decorator/injectable';
 import { ipcMain, BrowserWindow, app } from 'electron';
+import { isBoolean } from '@/common/utils/typesUtils';
+import childProcess from 'child_process';
 import { FileService } from './file.service';
 import { ConfigurationService } from './configuration.service';
-import { isBoolean } from '@/common/utils/types';
-import childProcess from 'child_process';
 
 @injectable
 export class IpcService {

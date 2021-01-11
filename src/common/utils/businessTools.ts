@@ -1,4 +1,4 @@
-import { isArray, isString } from './types';
+import { isArray, isString } from './typesUtils';
 
 export function isPicture(fileOrDirUrl: string): boolean {
     return [
@@ -34,6 +34,7 @@ export function encodeChar(url: string): string {
 
 export function extractVersionFromString(str: string) {
     const matchData = str.match(/\d+\.\d+\.\d+/);
-    if (isArray(matchData) && isString(matchData[0])) return matchData[0];
+    if (isArray(matchData) && matchData && isString(matchData[0]))
+        return matchData[0];
     return '';
 }

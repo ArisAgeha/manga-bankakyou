@@ -74,7 +74,7 @@ async function rimrafUnlink(path: string): Promise<void> {
         // Single file delete
         else {
             // chmod as needed to allow for unlink
-            const mode = stat.mode;
+            const { mode } = stat;
             if (!(mode & 128)) {
                 // 128 === 0200
                 await chmod(path, mode | 128);

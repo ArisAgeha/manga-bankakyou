@@ -1,17 +1,13 @@
 import 'reflect-metadata';
-import { ConfigurationService } from '@/main/services/configuration.service';
-import { FileService } from '@/main/services/file.service';
-import { EnvironmentService } from '@/main/services/environment.service';
 import { createInstance } from '@/common/decorator/injectable';
-import { LogService } from '@/main/services/log.service';
-import { Registry } from '@/common/registry';
 import { ServiceCollection } from '@/common/serviceCollection';
 import { app } from 'electron';
-import { isFunction } from '@/common/utils/types';
+import { EnvironmentService } from '../services/environment.service';
+import { LogService } from '../services/log.service';
+import { FileService } from '../services/file.service';
+import { ConfigurationService } from '../services/configuration.service';
 import { ChokidarService } from '../services/chokidar.service';
-import { serviceConstant } from '@/common/constant/service.constant';
-import { IpcService } from '@/main/services/ipc.services';
-// import { IpcService } from '../services/ipc.services';
+import { IpcService } from '../services/ipc.services';
 
 export class CodeMain {
     main(): void {
@@ -34,15 +30,12 @@ export class CodeMain {
         const ipcService = createInstance(IpcService);
 
         // store service
-        serviceCollection.set(serviceConstant.ENVIRONMENT, environmentService);
-        serviceCollection.set(serviceConstant.LOG, logService);
-        serviceCollection.set(serviceConstant.FILE, fileService);
-        serviceCollection.set(
-            serviceConstant.CONFIGURATION,
-            configurationService
-        );
-        serviceCollection.set(serviceConstant.IPC, ipcService);
-        serviceCollection.set(serviceConstant.CHOKIDAR, chokidarService);
+        serviceCollection.set('environment', environmentService);
+        serviceCollection.set('log', logService);
+        serviceCollection.set('file', fileService);
+        serviceCollection.set('configuration', configurationService);
+        serviceCollection.set('ipc', ipcService);
+        serviceCollection.set('chokidar', chokidarService);
 
         // auto initial service
         environmentService.initial();
@@ -51,6 +44,6 @@ export class CodeMain {
         ipcService.initial();
 
         // mount service to electron.app.remote
-        (global as any)['serviceCollection'] = serviceCollection;
+        global.serviceCollection = serviceCollection;
     }
 }

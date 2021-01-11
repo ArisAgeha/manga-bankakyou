@@ -1,8 +1,14 @@
-import { isRegExp, isDate, isPrimitive, isArguments, isArray } from './types';
 import { remote } from 'electron';
+import {
+    isRegExp,
+    isDate,
+    isPrimitive,
+    isArguments,
+    isArray,
+} from './typesUtils';
 
-export function toCamelCase(str: string, mark: string = '_') {
-    const regexp: RegExp = new RegExp(`${mark}\\w`, 'g');
+export function toCamelCase(str: string, mark = '_') {
+    const regexp = new RegExp(`${mark}\\w`, 'g');
     return str.replace(regexp, (a: string, b: any) => a.slice(1).toUpperCase());
 }
 
@@ -20,11 +26,10 @@ export function toggleArrayItem<T>(arr: T[], item: T): T[] {
 
     if (itemIndex === -1) {
         return [...arr, item];
-    } else {
-        const newArr = [...arr];
-        newArr.splice(itemIndex, 1);
-        return newArr;
     }
+    const newArr = [...arr];
+    newArr.splice(itemIndex, 1);
+    return newArr;
 }
 
 export function isSubArray<T>(mainArray: T[], checkArray: T[]) {
@@ -52,9 +57,11 @@ export function naturalCompare(a: any, b: any) {
 export function deepEqual(actual: any, expected: any, strict: boolean) {
     if (actual === expected) {
         return true;
-    } else if (isDate(actual) && isDate(expected)) {
+    }
+    if (isDate(actual) && isDate(expected)) {
         return actual.getTime() === expected.getTime();
-    } else if (isRegExp(actual) && isRegExp(expected)) {
+    }
+    if (isRegExp(actual) && isRegExp(expected)) {
         return (
             actual.source === expected.source &&
             actual.global === expected.global &&
@@ -62,14 +69,15 @@ export function deepEqual(actual: any, expected: any, strict: boolean) {
             actual.lastIndex === expected.lastIndex &&
             actual.ignoreCase === expected.ignoreCase
         );
-    } else if (
+    }
+    if (
         (actual === null || typeof actual !== 'object') &&
         (expected === null || typeof expected !== 'object')
     ) {
+        // eslint-disable-next-line eqeqeq
         return strict ? actual === expected : actual == expected;
-    } else {
-        return objEquiv(actual, expected, strict);
     }
+    return objEquiv(actual, expected, strict);
 }
 
 function objEquiv(a: any, b: any, strict: boolean): boolean {

@@ -1,4 +1,4 @@
-import { isString, isObject } from './utils/types';
+import { isString, isObject } from './utils/typesUtils';
 
 export interface IRegistry {
     add(id: string, data: any): void;
@@ -34,7 +34,7 @@ export const Registry: IRegistry = new RegistryImpl();
 export function ok(value?: any, message?: string): void {
     if (!value) {
         throw new Error(
-            message ? 'Assertion failed (' + message + ')' : 'Assertion Failed'
+            message ? `Assertion failed (${message})` : 'Assertion Failed'
         );
     }
 }

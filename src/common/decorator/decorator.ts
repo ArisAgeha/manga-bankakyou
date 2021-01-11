@@ -1,16 +1,22 @@
-import { isNumber } from '../utils/types';
+import { isNumber } from '../utils/typesUtils';
 
 /**
  * flagsPosition: if `flagsPosition` is defined and its value >= 0
  * the timeout will use the fn's args[flagsPosition] as key
  * and the debounce will only work with the function which has the same key
  */
-export function debounce<T>(delay: number, options: { flagsPostition?: number; isEvent?: boolean } = {}): Function {
+export function debounce<T>(
+    delay: number,
+    options: { flagsPostition?: number; isEvent?: boolean } = {}
+): Function {
     return createDecorator((fn: Function, key: string) => {
-        let timerKey: string = `$debounce$${key}`;
+        let timerKey = `$debounce$${key}`;
 
-        return function(this: any, ...args: any[]): void {
-            if (isNumber(options?.flagsPostition) && options.flagsPostition >= 0) {
+        return function (this: any, ...args: any[]): void {
+            if (
+                isNumber(options?.flagsPostition) &&
+                options.flagsPostition >= 0
+            ) {
                 timerKey = `$debounce$${key}-${args[options.flagsPostition]}`;
             }
 
@@ -26,13 +32,16 @@ export function debounce<T>(delay: number, options: { flagsPostition?: number; i
     });
 }
 
-export function throttle<T>(delay: number, options: { isEvent?: boolean } = {}): Function {
+export function throttle<T>(
+    delay: number,
+    options: { isEvent?: boolean } = {}
+): Function {
     return createDecorator((fn: Function, key: string) => {
-        const timerKey: string = `$throttle$timer$${key}`;
-        const lastRunKey: string = `$throttle$lastRun$${key}`;
-        const pendingKey: string = `$throttle$pending$${key}`;
+        const timerKey = `$throttle$timer$${key}`;
+        const lastRunKey = `$throttle$lastRun$${key}`;
+        const pendingKey = `$throttle$pending$${key}`;
 
-        return function(this: any, ...args: any[]): void {
+        return function (this: any, ...args: any[]): void {
             if (this[pendingKey]) {
                 return;
             }
@@ -54,12 +63,16 @@ export function throttle<T>(delay: number, options: { isEvent?: boolean } = {}):
     });
 }
 
-let memoizeId: number = 0;
+let memoizeId = 0;
 export function createMemoizer(): Function {
-    const memoizeKeyPrefix: string = `$memoize${memoizeId++}`;
+    const memoizeKeyPrefix = `$memoize${memoizeId++}`;
     let self: any;
 
-    const result = function memoize(target: any, key: string, descriptor: any): void {
+    const result = function memoize(
+        target: any,
+        key: string,
+        descriptor: any
+    ): void {
         let fnKey: string | null = null;
         let fn: Function | null = null;
 
@@ -68,7 +81,9 @@ export function createMemoizer(): Function {
             fn = descriptor.value;
 
             if (fn!.length !== 0) {
-                console.warn('Memoize should only be used in functions without parameter');
+                console.warn(
+                    'Memoize should only be used in functions without parameter'
+                );
             }
         } else if (typeof descriptor.get === 'function') {
             fnKey = 'get';
@@ -79,8 +94,8 @@ export function createMemoizer(): Function {
             throw new Error('not supported');
         }
 
-        const memoizeKey: string = `${memoizeKeyPrefix}:${key}`;
-        descriptor[fnKey!] = function(...args: any[]): string {
+        const memoizeKey = `${memoizeKeyPrefix}:${key}`;
+        descriptor[fnKey!] = function (...args: any[]): string {
             self = this;
 
             if (!this.hasOwnProperty(memoizeKey)) {
@@ -88,7 +103,7 @@ export function createMemoizer(): Function {
                     configurable: true,
                     enumerable: false,
                     writable: true,
-                    value: fn!.apply(this, args)
+                    value: fn!.apply(this, args),
                 });
             }
 
@@ -100,7 +115,7 @@ export function createMemoizer(): Function {
         if (typeof self === 'undefined') {
             return;
         }
-        Object.getOwnPropertyNames(self).forEach(property => {
+        Object.getOwnPropertyNames(self).forEach((property) => {
             if (property.indexOf(memoizeKeyPrefix) === 0) {
                 delete self[property];
             }
@@ -114,7 +129,9 @@ export function memoize(target: any, key: string, descriptor: any) {
     return createMemoizer()(target, key, descriptor);
 }
 
-function createDecorator(mapFn: (fn: Function, key: string) => Function): Function {
+function createDecorator(
+    mapFn: (fn: Function, key: string) => Function
+): Function {
     return (target: any, key: string, descriptor: any): void => {
         let fnKey: string | null = null;
         let fn: Function | null = null;

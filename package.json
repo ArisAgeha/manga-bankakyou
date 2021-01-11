@@ -1,7 +1,7 @@
 {
-    "name": "electron-react-boilerplate",
+    "name": "manga-bankakyou",
     "productName": "ElectronReact",
-    "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
+    "description": "a manga reader",
     "scripts": {
         "build": "concurrently \"yarn build:main\" \"yarn build:renderer\"",
         "build:main": "cross-env NODE_ENV=production webpack --config ./.erb/configs/webpack.config.main.prod.babel.js",
@@ -92,32 +92,25 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+        "url": "git+https://github.com/ArisAgeha/manga-bankakyou.git"
     },
     "author": {
-        "name": "Electron React Boilerplate Maintainers",
-        "email": "electronreactboilerplate@gmail.com",
-        "url": "https://electron-react-boilerplate.js.org"
+        "name": "ArisAgeha",
+        "email": "87725092@qq.com"
     },
     "contributors": [
         {
-            "name": "Amila Welihinda",
-            "email": "amilajack@gmail.com",
-            "url": "https://github.com/amilajack"
-        },
-        {
-            "name": "John Tran",
-            "email": "jptran318@gmail.com",
-            "url": "https://github.com/jooohhn"
+            "name": "ArisAgeha",
+            "email": "87725092@qq.com"
         }
     ],
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+        "url": "https://github.com/ArisAgeha/manga-bankakyou/issues"
     },
     "keywords": [
         "electron",
-        "boilerplate",
+        "manga-reader",
         "react",
         "typescript",
         "ts",
@@ -126,7 +119,7 @@
         "hot",
         "reload"
     ],
-    "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+    "homepage": "https://github.com/ArisAgeha/manga-bankakyou",
     "jest": {
         "testURL": "http://localhost/",
         "moduleNameMapper": {
