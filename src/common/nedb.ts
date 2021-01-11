@@ -1,12 +1,13 @@
-import DataStore from 'nedb-promises';
+import DataStore from 'nedb';
 
-export const db: {
-    [key in DbName]?: DataStore;
-} = {
-    collection: DataStore.create({ filename: '../userdata/collection' }),
-    directory: DataStore.create({ filename: '../userdata/directory' }),
-    tag: DataStore.create({ filename: '../userdata/tag' }),
-    author: DataStore.create({ filename: '../userdata/author' }),
+export const dbs = {
+    collection: new DataStore({
+        filename: '../userdata/collection',
+        autoload: true,
+    }),
+    directory: new DataStore({
+        filename: '../userdata/directory',
+        autoload: true,
+    }),
+    author: new DataStore({ filename: '../userdata/author', autoload: true }),
 };
-
-export type DbName = 'collection' | 'directory' | 'tag' | 'author';
