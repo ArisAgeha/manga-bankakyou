@@ -1,23 +1,16 @@
-import { dbs } from '../nedb';
+import DataStore from 'nedb';
+import { AuthorDto } from '../entity/author.dto';
+import { BooksDto } from '../entity/books.dto';
+import { CollectionDto } from '../entity/collection.dto';
+import { PvDto } from '../entity/pv.dto';
 
-export async function upsertMany(querysObject: any[], updateObjs: any) {
-    const exsistsObject: any[] = await db.directory
-        .find({ $or: querysObject })
-        .exec();
-    const ninObject = querysObject.filter(
-        (obj) =>
-            !exsistsObject.some((eObj) =>
-                Object.keys(obj).every((key) => eObj[key] === obj[key])
-            )
-    );
-    await dbs.directory.insert(ninObject);
-    await dbs.directory.update(
-        { $or: querysObject },
-        { $set: updateObjs },
-        { multi: true }
-    );
-}
-
-export function insert<T extends keyof typeof dbs, G>(target: T, newDoc: G) {
-    return new Promise((resolve, reject) => {});
+export function insertDoc<
+    T extends PvDto | CollectionDto | BooksDto | AuthorDto
+>(db: DataStore<T>, newDoc: T) {
+    return new Promise((resolve, reject) => {
+        db.insert(newDoc, (err: Error | null, document: T) => {
+            if (err) reject();
+            else resolve(document);
+        });
+    });
 }

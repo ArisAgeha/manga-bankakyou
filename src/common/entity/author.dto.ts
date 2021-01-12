@@ -1,11 +1,12 @@
-import { Directory } from './directory.dto';
+import { BooksDto } from './books.dto';
 
 export interface AuthorDto {
     _id: string;
     name: string;
     tags: string[];
-    directorys: Directory['_id'][];
+    directorys: BooksDto['_id'][];
     score: number;
     last_read_date: number;
     read_time: number;
+    is_delete: boolean;
 }
