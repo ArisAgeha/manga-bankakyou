@@ -15,6 +15,7 @@ import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './main/menu';
+import { Core } from './main/code/main';
 
 export default class AppUpdater {
     constructor() {
@@ -24,7 +25,11 @@ export default class AppUpdater {
     }
 }
 
-let mainWindow: BrowserWindow | null = null;
+export const windowTransport: {
+    mainWindow: null | BrowserWindow;
+} = {
+    mainWindow: null,
+};
 
 if (process.env.NODE_ENV === 'production') {
     const sourceMapSupport = require('source-map-support');
@@ -51,7 +56,10 @@ const installExtensions = async () => {
         .catch(console.log);
 };
 
-const initService = async () => {};
+const initService = async () => {
+    const core = new Core();
+    core.startup();
+};
 
 const createWindow = async () => {
     if (
@@ -69,7 +77,7 @@ const createWindow = async () => {
         return path.join(RESOURCES_PATH, ...paths);
     };
 
-    mainWindow = new BrowserWindow({
+    windowTransport.mainWindow = new BrowserWindow({
         show: false,
         width: 1600,
         height: 900,
@@ -80,31 +88,31 @@ const createWindow = async () => {
         },
     });
 
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+    windowTransport.mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     // @TODO: Use 'ready-to-show' event
     //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-    mainWindow.webContents.on('did-finish-load', () => {
-        if (!mainWindow) {
-            throw new Error('"mainWindow" is not defined');
+    windowTransport.mainWindow.webContents.on('did-finish-load', () => {
+        if (!windowTransport.mainWindow) {
+            throw new Error('"windowTransport.mainWindow" is not defined');
         }
         if (process.env.START_MINIMIZED) {
-            mainWindow.minimize();
+            windowTransport.mainWindow.minimize();
         } else {
-            mainWindow.show();
-            mainWindow.focus();
+            windowTransport.mainWindow.show();
+            windowTransport.mainWindow.focus();
         }
     });
 
-    mainWindow.on('closed', () => {
-        mainWindow = null;
+    windowTransport.mainWindow.on('closed', () => {
+        windowTransport.mainWindow = null;
     });
 
-    const menuBuilder = new MenuBuilder(mainWindow);
+    const menuBuilder = new MenuBuilder(windowTransport.mainWindow);
     menuBuilder.buildMenu();
 
     // Open urls in the user's browser
-    mainWindow.webContents.on('new-window', (event, url) => {
+    windowTransport.mainWindow.webContents.on('new-window', (event, url) => {
         event.preventDefault();
         shell.openExternal(url);
     });
@@ -131,7 +139,5 @@ app.whenReady().then(initService).then(createWindow).catch(console.log);
 app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (mainWindow === null) createWindow();
+    if (windowTransport.mainWindow === null) createWindow();
 });
-
-export { mainWindow };

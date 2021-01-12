@@ -1,9 +1,13 @@
-import { ChokidarService } from '@/main/services/chokidar.service';
-import { ConfigurationService } from '@/main/services/configuration.service';
-import { EnvironmentService } from '@/main/services/environment.service';
-import { FileService } from '@/main/services/file.service';
-import { IpcService } from '@/main/services/ipc.services';
-import { LogService } from '@/main/services/log.service';
+import {
+    LogService,
+    IpcService,
+    FileService,
+    EnvironmentService,
+    ChokidarService,
+    ConfigurationService,
+} from '../main/services';
+
+ChokidarService;
 
 export type Entries = {
     chokidar: ChokidarService | null;

@@ -1,4 +1,4 @@
-import { ServiceCollection } from '@/common/serviceCollection';
+import { ServiceCollection } from '../common/serviceCollection';
 
 declare global {
     namespace NodeJS {

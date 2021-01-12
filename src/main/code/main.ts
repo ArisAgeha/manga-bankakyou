@@ -1,20 +1,16 @@
 import 'reflect-metadata';
-import { createInstance } from '@/common/decorator/injectable';
-import { ServiceCollection } from '@/common/serviceCollection';
-import { app } from 'electron';
 import { EnvironmentService } from '../services/environment.service';
 import { LogService } from '../services/log.service';
 import { FileService } from '../services/file.service';
 import { ConfigurationService } from '../services/configuration.service';
 import { ChokidarService } from '../services/chokidar.service';
 import { IpcService } from '../services/ipc.services';
+import { createInstance } from '../../common/decorator/injectable';
 
-export class CodeMain {
-    main(): void {
-        this.startup();
-    }
+export class Core {
+    constructor() {}
 
-    private startup() {
+    startup() {
         this.createServices();
     }
 

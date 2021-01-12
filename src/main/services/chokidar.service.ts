@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { injectable } from '@/common/decorator/injectable';
 import chokidar from 'chokidar';
 import { LogService } from './log.service';
+import { injectable } from '../../common/decorator/injectable';
 
 @injectable
 export class ChokidarService {

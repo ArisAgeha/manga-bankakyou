@@ -26,11 +26,7 @@
         "emitDecoratorMetadata": true,
         "baseUrl": "./",
         "paths": {
-            "*": ["node_modules/*"],
-            "@/*": ["src/*"],
-            "common/*": ["src/common/*"],
-            "main/*": ["src/main*"],
-            "renderer/*": ["src/renderer*"]
+            "*": ["node_modules/*"]
         }
     },
     "exclude": [
