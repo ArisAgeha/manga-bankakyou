@@ -1,8 +1,8 @@
 import DataStore from 'nedb';
-import { AuthorDto } from './entity/author.dto';
-import { BooksDto } from './entity/books.dto';
-import { CollectionDto } from './entity/collection.dto';
 import { PvDto } from './entity/pv.dto';
+import { CollectionDto } from './entity/collection.dto';
+import { BookDto } from './entity/book.dto';
+import { AuthorDto } from './entity/author.dto';
 
 export const pvDb = new DataStore<PvDto>({
     filename: '../userdata/pv',
@@ -14,7 +14,7 @@ export const collectionDb = new DataStore<CollectionDto>({
     autoload: true,
 });
 
-export const booksDb = new DataStore<BooksDto>({
+export const booksDb = new DataStore<BookDto>({
     filename: '../userdata/books',
     autoload: true,
 });

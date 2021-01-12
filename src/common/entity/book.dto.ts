@@ -1,12 +1,10 @@
-import { BookDto } from './book.dto';
-
-export interface AuthorDto {
+export interface BookDto {
     _id?: string;
     name?: string;
+    path?: string;
     tags?: string[];
-    books?: BookDto['_id'][];
     score?: number;
+    last_check_date?: number;
     last_read_date?: number;
-    read_time?: number;
     is_delete?: boolean;
 }
