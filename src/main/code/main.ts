@@ -6,6 +6,7 @@ import { ConfigurationService } from '../services/configuration.service';
 import { ChokidarService } from '../services/chokidar.service';
 import { IpcService } from '../services/ipc.services';
 import { createInstance } from '../../common/decorator/injectable';
+import { ServiceCollection } from '../../common/serviceCollection';
 
 export class Core {
     constructor() {}
