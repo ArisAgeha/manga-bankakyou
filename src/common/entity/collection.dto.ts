@@ -11,5 +11,5 @@ export interface CollectionDto {
     last_read_date?: number;
     read_time?: number;
     is_delete?: boolean;
-    top: BookDto['_id'][];
+    top?: BookDto['_id'][];
 }

@@ -4,19 +4,12 @@ import os from 'os';
 import p from 'path';
 
 export const readdir = promisify(fs.readdir);
-
 export const stat = promisify(fs.stat);
-
 export const writeFile = promisify(fs.writeFile);
-
 export const rename = promisify(fs.rename);
-
 export const unlink = promisify(fs.unlink);
-
 export const lstat = promisify(fs.lstat);
-
 export const chmod = promisify(fs.chmod);
-
 export const readFile = promisify(fs.readFile);
 
 export async function readdirWithFileTypes(path: string): Promise<fs.Dirent[]> {

@@ -9,4 +9,6 @@ export interface AuthorDto {
     last_read_date?: number;
     read_time?: number;
     is_delete?: boolean;
+    top?: BookDto[];
+    sort?: number;
 }
