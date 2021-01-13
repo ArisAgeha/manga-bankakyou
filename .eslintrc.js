@@ -20,6 +20,8 @@ module.exports = {
         '@typescript-eslint/no-unused-expressions': 'off',
         'no-param-reassign': 'off',
         'consistent-return': 'off',
+        'no-await-in-loop': 'off',
+        'no-underscore-dangle': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

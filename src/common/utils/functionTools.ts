@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import { transformFromAst } from '@babel/core';
 import {
     isRegExp,
     isDate,
@@ -10,13 +10,6 @@ import {
 export function toCamelCase(str: string, mark = '_') {
     const regexp = new RegExp(`${mark}\\w`, 'g');
     return str.replace(regexp, (a: string, b: any) => a.slice(1).toUpperCase());
-}
-
-export function isDev() {
-    return !remote.app.isPackaged;
-}
-export function isProd() {
-    return process.env.NODE_ENV !== 'development' || remote.app.isPackaged;
 }
 
 export function emptyCall(): void {}
@@ -113,4 +106,20 @@ function objEquiv(a: any, b: any, strict: boolean): boolean {
         if (!deepEqual(a[key], b[key], strict)) return false;
     }
     return true;
+}
+
+export function tryFunc(func: Function) {
+    try {
+        return func();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export async function tryFuncAsync(func: Function) {
+    try {
+        return await func();
+    } catch (err) {
+        console.error(err);
+    }
 }

@@ -6,26 +6,26 @@ import { AuthorDto } from './entity/author.dto';
 import { ConfigurationDto } from './entity/configuration';
 
 export const pvDb = new DataStore<PvDto>({
-    filename: '../userdata/pv',
+    filename: './userdata/pv',
     autoload: true,
 });
 
 export const collectionDb = new DataStore<CollectionDto>({
-    filename: '../userdata/collection',
+    filename: './userdata/collection',
     autoload: true,
 });
 
 export const booksDb = new DataStore<BookDto>({
-    filename: '../userdata/books',
+    filename: './userdata/books',
     autoload: true,
 });
 
 export const authorDb = new DataStore<AuthorDto>({
-    filename: '../userdata/author',
+    filename: './userdata/author',
     autoload: true,
 });
 
 export const configurationDb = new DataStore<ConfigurationDto>({
-    filename: '../userdata/configuration',
+    filename: './userdata/configuration',
     autoload: true,
 });
