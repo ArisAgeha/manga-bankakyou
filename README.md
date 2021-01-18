@@ -1,7 +1,7 @@
 # CheckList
 # 初始化
 - (√) webpack配置
-- (√) tslint / eslint配置
+- (√) tslint / editorConfig / prettier配置
 - (√) 常用装饰器
 - (√) 依赖注入
 - (√) 数据库初始化
