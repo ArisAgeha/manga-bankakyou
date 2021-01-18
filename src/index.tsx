@@ -14,7 +14,7 @@ async function bootStrap() {
     try {
         const defaultLng = await services.configuration!.getConfigByValue(
             'i18n',
-            'defaultLng'
+            'default_lng'
         );
 
         await initI18n(defaultLng || 'zh-cn');

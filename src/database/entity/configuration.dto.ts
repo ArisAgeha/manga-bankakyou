@@ -1,5 +1,8 @@
+export interface EnvConfig {
+    is_inited: boolean;
+}
 export interface I18nConfig {
-    defaultLng: string;
+    default_lng: string;
 }
 
 export interface WindowsConfig {
@@ -8,15 +11,15 @@ export interface WindowsConfig {
 }
 
 export interface WorkbenchConfig {
-    sidebarWidth: number;
-    showSidebar: boolean;
+    sidebar_width: number;
+    show_sidebar: boolean;
 }
 
 export interface GalleryConfig {
-    defaultViewMode: 'double';
-    defaultPicsPerLine: number;
-    doubleDirection: 'LR' | 'RL';
-    scrollDirection: 'TB' | 'BT' | 'LR' | 'RL';
+    default_view_mode: 'double';
+    default_pics_per_line: number;
+    double_direction: 'LR' | 'RL';
+    scroll_direction: 'TB' | 'BT' | 'LR' | 'RL';
 }
 
 export type Configs = {
