@@ -9,7 +9,6 @@ import initI18n from './languages/i18n';
 bootStrap();
 
 async function bootStrap() {
-    console.log(remote);
     const services: Services = remote.getGlobal('services');
     try {
         const defaultLng = await services.configuration!.getConfigByValue(
