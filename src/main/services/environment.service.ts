@@ -7,14 +7,8 @@ export class EnvironmentService {
     constructor() {}
 
     initial(): void {
-        this.initCfgDoc();
+        this.initCfg();
     }
 
-    initCfgDoc() {
-        const dirPath = path.resolve('configuration');
-        if (!fs.existsSync(dirPath)) {
-            fs.mkdirSync(dirPath);
-            fs.mkdirSync(path.resolve(dirPath, 'user'));
-        }
-    }
+    initCfg() {}
 }

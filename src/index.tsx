@@ -6,11 +6,11 @@ import './App.global.css';
 import { Services } from './common/serviceCollection';
 import initI18n from './languages/i18n';
 
-const services: Services = remote.getGlobal('services');
-
 bootStrap();
 
 async function bootStrap() {
+    console.log(remote);
+    const services: Services = remote.getGlobal('services');
     try {
         const defaultLng = await services.configuration!.getConfigByValue(
             'i18n',

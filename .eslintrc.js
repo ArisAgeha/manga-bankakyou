@@ -23,6 +23,7 @@ module.exports = {
         'no-await-in-loop': 'off',
         'no-underscore-dangle': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
+        'global-require': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

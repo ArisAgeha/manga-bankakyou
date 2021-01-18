@@ -32,9 +32,9 @@ export type MoveStep = {
 };
 
 class GestureFactory {
-    refs = new Map<HTMLElement, GestureMaps>();
+    private refs = new WeakMap<HTMLElement, GestureMaps>();
 
-    MIN_DETECT_DISTANCE = 100;
+    private MIN_DETECT_DISTANCE = 100;
 
     constructor() {}
 

@@ -1,5 +1,4 @@
 import { notification, message } from 'antd';
-import { emptyCall } from '../../common/utils/functionTools';
 import { isString } from '../../common/utils/typesUtils';
 
 type NotificationOptions = {
@@ -21,7 +20,7 @@ export const notify = (options: NotificationOptions) => {
         type = '',
     } = options;
 
-    closeOtherNotification ? notification.destroy() : emptyCall();
+    if (closeOtherNotification) notification.destroy();
 
     const notifyParams = {
         duration,
