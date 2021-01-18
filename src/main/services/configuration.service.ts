@@ -2,9 +2,9 @@ import { injectable } from '../../common/decorator/injectable';
 import { findOneDoc } from '../../common/utils/dbHelper';
 import { isUndefinedOrNull } from '../../common/utils/typesUtils';
 import {
-    ConfigType,
+    Configs,
     ConfigurationDto,
-} from '../../database/entity/configuration';
+} from '../../database/entity/configuration.dto';
 import { configurationDb } from '../../database/nedb';
 
 @injectable
@@ -13,8 +13,13 @@ export class ConfigurationService {
 
     initial(): void {}
 
-    async getConfigByValue<T>(type: ConfigType, field: string) {
-        const target = await findOneDoc(configurationDb, { type });
+    async getConfigByValue<T extends keyof Configs>(
+        type: T,
+        field: keyof Configs[T]
+    ) {
+        const target = await findOneDoc<ConfigurationDto<T>>(configurationDb, {
+            type,
+        });
         if (!target) return '';
 
         const targetVal = target.config && target.config[field];
@@ -22,8 +27,4 @@ export class ConfigurationService {
         if (!isUndefinedOrNull(targetVal)) return targetVal;
         return '';
     }
-}
-
-export interface I18nConfig {
-    defaultLng: string;
 }

@@ -9,7 +9,7 @@ import {
 
 ChokidarService;
 
-export type Entries = {
+export type Services = {
     chokidar: ChokidarService | null;
     configuration: ConfigurationService | null;
     file: FileService | null;
@@ -18,23 +18,11 @@ export type Entries = {
     ipc: IpcService | null;
 };
 
-export class ServiceCollection {
-    private readonly entries: Entries = {
-        chokidar: null,
-        configuration: null,
-        file: null,
-        environment: null,
-        log: null,
-        ipc: null,
-    };
-
-    constructor() {}
-
-    set<T extends keyof Entries>(id: T, instance: Entries[T]): void {
-        this.entries[id] = instance;
-    }
-
-    get<T extends keyof Entries>(id: T): Entries[T] {
-        return this.entries[id];
-    }
-}
+export const services: Services = {
+    chokidar: null,
+    configuration: null,
+    file: null,
+    environment: null,
+    log: null,
+    ipc: null,
+};

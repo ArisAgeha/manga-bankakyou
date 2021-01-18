@@ -3,7 +3,6 @@ import { AuthorDto } from '../../database/entity/author.dto';
 import { BookDto } from '../../database/entity/book.dto';
 import { CollectionDto } from '../../database/entity/collection.dto';
 import { PvDto } from '../../database/entity/pv.dto';
-import { pvDb } from '../../database/nedb';
 
 type Dto = BookDto | AuthorDto | CollectionDto | PvDto;
 

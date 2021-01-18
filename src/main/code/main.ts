@@ -6,7 +6,7 @@ import { ConfigurationService } from '../services/configuration.service';
 import { ChokidarService } from '../services/chokidar.service';
 import { IpcService } from '../services/ipc.services';
 import { createInstance } from '../../common/decorator/injectable';
-import { ServiceCollection } from '../../common/serviceCollection';
+import { services } from '../../common/serviceCollection';
 
 export class Core {
     constructor() {}
@@ -16,8 +16,6 @@ export class Core {
     }
 
     private createServices(): void {
-        const serviceCollection = new ServiceCollection();
-
         // create service by IOC
         const environmentService = createInstance(EnvironmentService);
         const logService = createInstance(LogService);
@@ -27,12 +25,12 @@ export class Core {
         const ipcService = createInstance(IpcService);
 
         // store service
-        serviceCollection.set('environment', environmentService);
-        serviceCollection.set('log', logService);
-        serviceCollection.set('file', fileService);
-        serviceCollection.set('configuration', configurationService);
-        serviceCollection.set('ipc', ipcService);
-        serviceCollection.set('chokidar', chokidarService);
+        services.environment = environmentService;
+        services.log = logService;
+        services.file = fileService;
+        services.configuration = configurationService;
+        services.ipc = ipcService;
+        services.chokidar = chokidarService;
 
         // auto initial service
         environmentService.initial();
@@ -41,6 +39,6 @@ export class Core {
         ipcService.initial();
 
         // mount service to electron.app.remote
-        global.serviceCollection = serviceCollection;
+        global.services = services;
     }
 }

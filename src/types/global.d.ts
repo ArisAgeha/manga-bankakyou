@@ -1,9 +1,9 @@
-import { ServiceCollection } from '../common/serviceCollection';
+import { Services } from '../common/serviceCollection';
 
 declare global {
     namespace NodeJS {
         interface Global {
-            serviceCollection: ServiceCollection;
+            services: Services;
         }
     }
 }
