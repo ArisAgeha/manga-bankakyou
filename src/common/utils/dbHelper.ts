@@ -20,7 +20,7 @@ export function insertDoc<T extends Dto | Dto[]>(
 
 export function findDoc<T extends Dto>(
     db: DataStore<T>,
-    query: T,
+    query: any,
     projection: any = {}
 ): Promise<T[]> {
     return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ export function findDoc<T extends Dto>(
 
 export function findOneDoc<T extends Dto>(
     db: DataStore<T>,
-    query: T,
+    query: any,
     projection: any = {}
 ): Promise<T> {
     return new Promise((resolve, reject) => {

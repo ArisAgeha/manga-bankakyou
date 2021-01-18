@@ -1,5 +1,6 @@
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import { emptyCall } from '../../common/utils/functionTools';
+import { isString } from '../../common/utils/typesUtils';
 
 type NotificationOptions = {
     msg: string;
@@ -32,5 +33,18 @@ export const notify = (options: NotificationOptions) => {
         notification[type](notifyParams);
     } else {
         notification.open(notifyParams);
+    }
+};
+
+type MsgType = 'success' | 'info' | 'warning' | 'error';
+
+export const msg = (msg: string, type: MsgType = 'info') => {
+    if (isString(msg)) message[type](msg);
+
+    try {
+        if (isString(msg)) console.log(msg);
+        else console.log(JSON.parse(JSON.stringify(msg)));
+    } catch (err) {
+        console.log(msg);
     }
 };
