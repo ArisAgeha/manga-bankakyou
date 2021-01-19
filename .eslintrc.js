@@ -24,6 +24,7 @@ module.exports = {
         'no-underscore-dangle': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
         'global-require': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

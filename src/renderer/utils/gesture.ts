@@ -84,7 +84,7 @@ class GestureFactory {
     }
 
     private initListener<T extends EventTarget>(target: T) {
-        const callback = (downEvent: MouseEvent) => {
+        const mousedownHandler = (downEvent: MouseEvent) => {
             const mouseType = this.getMouseTypeFromButtons(downEvent.buttons);
             if (!mouseType) return;
 
@@ -98,7 +98,7 @@ class GestureFactory {
             const moveSlice = { x: 0, y: 0 };
             let timer = 0;
 
-            const onMove = (moveEvent: MouseEvent) => {
+            const mousemoveHandler = (moveEvent: MouseEvent) => {
                 moveSlice.x += moveEvent.movementX;
                 moveSlice.y -= moveEvent.movementY;
 
@@ -133,23 +133,19 @@ class GestureFactory {
                 }
             };
 
-            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mousemove', mousemoveHandler);
             window.addEventListener(
                 'mouseup',
                 () => {
-                    window.removeEventListener('mousemove', onMove);
+                    window.removeEventListener('mousemove', mousemoveHandler);
 
-                    this.checkHandlerList(target, moveStep, keyType);
+                    this.checkHandlerList(window, moveStep, keyType);
                 },
                 { once: true }
             );
         };
 
-        if (target instanceof HTMLElement) {
-            target.addEventListener('mousedown', callback);
-        } else if (target instanceof Window) {
-            target.addEventListener('mousedown', callback);
-        }
+        target.addEventListener('mousedown', mousedownHandler as any);
     }
 
     private checkHandlerList(
