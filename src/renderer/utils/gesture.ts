@@ -1,5 +1,7 @@
 export type GestureHandler = () => void;
 
+export type EventTarget = HTMLElement | Window;
+
 export interface GestureMaps {
     [key: string]: GestureHandlerItem[];
 }
@@ -32,21 +34,19 @@ export type MoveStep = {
 };
 
 class GestureFactory {
-    private refs = new WeakMap<HTMLElement, GestureMaps>();
+    private refs = new WeakMap<EventTarget, GestureMaps>();
 
     private MIN_DETECT_DISTANCE = 100;
 
     constructor() {}
 
     registry(
-        target: HTMLElement,
+        target: EventTarget,
         keyType: KeyType,
         dispatchCondition: DispatchCondition[],
         gestureHandler: GestureHandler
     ) {
-        if (!this.refs.get(target)) {
-            this.initListener(target);
-        }
+        if (!this.refs.get(target)) this.initListener(target);
 
         const identifier = this.getIdentifier(keyType);
         this.saveGestureHandler(
@@ -58,7 +58,7 @@ class GestureFactory {
     }
 
     private saveGestureHandler(
-        target: HTMLElement,
+        target: EventTarget,
         identifier: string,
         dispatchCondition: DispatchCondition[],
         gestureHandler: GestureHandler
@@ -83,8 +83,8 @@ class GestureFactory {
         }
     }
 
-    private initListener(target: HTMLElement) {
-        target.addEventListener('mousedown', (downEvent: MouseEvent) => {
+    private initListener<T extends EventTarget>(target: T) {
+        const callback = (downEvent: MouseEvent) => {
             const mouseType = this.getMouseTypeFromButtons(downEvent.buttons);
             if (!mouseType) return;
 
@@ -143,11 +143,17 @@ class GestureFactory {
                 },
                 { once: true }
             );
-        });
+        };
+
+        if (target instanceof HTMLElement) {
+            target.addEventListener('mousedown', callback);
+        } else if (target instanceof Window) {
+            target.addEventListener('mousedown', callback);
+        }
     }
 
     private checkHandlerList(
-        target: HTMLElement,
+        target: EventTarget,
         moveStep: MoveStep[],
         keyType: KeyType
     ) {

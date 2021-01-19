@@ -5,6 +5,7 @@ import App from './App';
 import './App.global.css';
 import { Services } from './common/serviceCollection';
 import initI18n from './languages/i18n';
+import { Gesture } from './renderer/utils/gesture';
 
 bootStrap();
 
