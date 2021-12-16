@@ -47,6 +47,7 @@ module.exports = {
         eqeqeq: 'off',
         'react/jsx-boolean-value': 'off',
         'no-lonely-if': 'off',
+        'react/jsx-props-no-spreading': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

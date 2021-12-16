@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FileBar } from './parts/fileBar/fileBar';
-import { MainView } from './parts/mainView/mainView';
+import MainView from './parts/mainView/mainView';
 import { ManageBar } from './parts/manageBar/manageBar';
 import { ToolsBar } from './parts/toolsBar/toolsBar';
 import { InfoBar } from './parts/infoBar/infoBar';
@@ -18,6 +18,7 @@ import { eventConstant } from '@/common/constant/event.constant';
 import { command } from '@/common/constant/command.constant';
 import { Gesture } from './utils/gesture';
 import bgimg from '@/renderer/static/image/background01.jpg';
+import { withRouter } from 'react-router-dom';
 
 interface ILayoutState {
     fileBarIsShow: boolean;
@@ -409,4 +410,4 @@ class Layout extends React.PureComponent<any, ILayoutState> {
     }
 }
 
-export { Layout };
+export default Layout;

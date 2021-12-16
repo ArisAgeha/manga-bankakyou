@@ -91,7 +91,6 @@ export class ConfigurationService {
 
         configBundleName.forEach((filename: string) => {
             const fileContent = require(`../../configuration/default/${filename}.json`);
-            console.log(fileContent);
             config[fileContent.id] = fileContent.properties;
         });
 

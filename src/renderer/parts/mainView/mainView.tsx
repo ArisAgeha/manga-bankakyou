@@ -1,9 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import style from './mainView.scss';
 import { Gesture } from '@/renderer/utils/gesture';
+import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-export interface IMainViewProps {}
+import { routerList } from '../../router';
+
+export interface IMainViewProps extends RouteComponentProps {}
 
 export interface IMainViewState {
     pages: Page[];
@@ -24,10 +28,7 @@ export type LoadPictureRequest = {
     recursiveDepth?: number;
 };
 
-export class MainView extends React.PureComponent<
-    IMainViewProps,
-    IMainViewState
-> {
+class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
     private readonly tabRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: IMainViewProps) {
@@ -180,13 +181,6 @@ export class MainView extends React.PureComponent<
 
     render(): JSX.Element {
         const Tab = this.renderTab;
-        const currentPageId = this.state.pages.find(
-            (page) => page.id === this.state.currentPage
-        )?.id;
-
-        const pages = this.state.pages;
-
-        const Pages = pages.map((page, index) => <div key={index}>test</div>);
 
         return (
             <div className={`${style.mainView}`}>
@@ -202,8 +196,27 @@ export class MainView extends React.PureComponent<
                         <Tab key={page.id} page={page} />
                     ))}
                 </div>
-                <div className={`${style.displayArea}`}> {Pages}</div>
+                <div className={`${style.displayArea}`}>
+                    <CacheSwitch>
+                        {routerList.map((item) => {
+                            return (
+                                <CacheRoute
+                                    key={item.name}
+                                    cacheKey={item.name}
+                                    path={item.path}
+                                    component={item.component}
+                                />
+                            );
+                        })}
+                    </CacheSwitch>
+                </div>
             </div>
         );
     }
 }
+
+const MainViewWithRouter = withRouter(({ history, ...props }) => {
+    return <MainView {...props} history={history} />;
+});
+
+export default MainViewWithRouter;
