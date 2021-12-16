@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import style from './mainView.scss';
-import { useTranslation } from 'react-i18next';
 import { Gesture } from '@/renderer/utils/gesture';
 
 export interface IMainViewProps {}
@@ -152,7 +151,6 @@ export class MainView extends React.PureComponent<
 
     renderTab = (props: { page: Page }) => {
         const { page } = props;
-        const { t } = useTranslation();
         const isSelected = this.state.currentPage === page.id;
         const titleI18nModel = '%multipleSources%';
 

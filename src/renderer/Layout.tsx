@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FileBar, fileBarViewType } from './parts/fileBar/fileBar';
+import { FileBar } from './parts/fileBar/fileBar';
 import { MainView } from './parts/mainView/mainView';
 import { ManageBar } from './parts/manageBar/manageBar';
 import { ToolsBar } from './parts/toolsBar/toolsBar';
@@ -25,7 +25,6 @@ interface ILayoutState {
     manageBarCanDrag: boolean;
     toolsBarWidth: number;
     infoBarHeight: number;
-    filebarShowView: fileBarViewType;
     isBlur: boolean;
 }
 
@@ -63,7 +62,6 @@ class Layout extends React.PureComponent<any, ILayoutState> {
             manageBarCanDrag: false,
             toolsBarWidth: 50,
             infoBarHeight: 22,
-            filebarShowView: 'directory',
             isBlur: false,
         };
 
@@ -345,18 +343,6 @@ class Layout extends React.PureComponent<any, ILayoutState> {
         return cursor;
     }
 
-    showColelctionView() {
-        this.setState({
-            filebarShowView: 'collection',
-        });
-    }
-
-    changeFilebarView = (view: fileBarViewType) => {
-        this.setState({
-            filebarShowView: view,
-        });
-    };
-
     render(): JSX.Element {
         const cursor: string = this.getCursorStyle();
 
@@ -390,7 +376,6 @@ class Layout extends React.PureComponent<any, ILayoutState> {
                         >
                             <ToolsBar
                                 toolsBarWidth={this.state.toolsBarWidth}
-                                changeFilebarView={this.changeFilebarView}
                             />
                         </div>
                         <div
@@ -398,7 +383,7 @@ class Layout extends React.PureComponent<any, ILayoutState> {
                             style={fileBarStyle}
                             ref={this.fileBarRef}
                         >
-                            <FileBar showView={this.state.filebarShowView} />
+                            <FileBar />
                         </div>
                     </div>
 

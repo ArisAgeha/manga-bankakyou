@@ -42,6 +42,10 @@ module.exports = {
         'react-hooks/rules-of-hooks': 'off',
         'react/no-array-index-key': 'off',
         'import/no-cycle': 'off',
+        'react/self-closing-comp': 'off',
+        'no-else-return': 'off',
+        eqeqeq: 'off',
+        'react/jsx-boolean-value': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

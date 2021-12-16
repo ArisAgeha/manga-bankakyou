@@ -1,15 +1,16 @@
-import { transformFromAst } from '@babel/core';
-import {
-    isRegExp,
-    isDate,
-    isPrimitive,
-    isArguments,
-    isArray,
-} from './types';
+import { isRegExp, isDate, isPrimitive, isArguments, isArray } from './types';
+import { remote } from 'electron';
 
 export function toCamelCase(str: string, mark = '_') {
     const regexp = new RegExp(`${mark}\\w`, 'g');
     return str.replace(regexp, (a: string, b: any) => a.slice(1).toUpperCase());
+}
+
+export function isDev() {
+    return !remote.app.isPackaged;
+}
+export function isProd() {
+    return process.env.NODE_ENV !== 'development' || remote.app.isPackaged;
 }
 
 export function emptyCall(): void {}
@@ -19,10 +20,11 @@ export function toggleArrayItem<T>(arr: T[], item: T): T[] {
 
     if (itemIndex === -1) {
         return [...arr, item];
+    } else {
+        const newArr = [...arr];
+        newArr.splice(itemIndex, 1);
+        return newArr;
     }
-    const newArr = [...arr];
-    newArr.splice(itemIndex, 1);
-    return newArr;
 }
 
 export function isSubArray<T>(mainArray: T[], checkArray: T[]) {
@@ -50,11 +52,9 @@ export function naturalCompare(a: any, b: any) {
 export function deepEqual(actual: any, expected: any, strict: boolean) {
     if (actual === expected) {
         return true;
-    }
-    if (isDate(actual) && isDate(expected)) {
+    } else if (isDate(actual) && isDate(expected)) {
         return actual.getTime() === expected.getTime();
-    }
-    if (isRegExp(actual) && isRegExp(expected)) {
+    } else if (isRegExp(actual) && isRegExp(expected)) {
         return (
             actual.source === expected.source &&
             actual.global === expected.global &&
@@ -62,15 +62,14 @@ export function deepEqual(actual: any, expected: any, strict: boolean) {
             actual.lastIndex === expected.lastIndex &&
             actual.ignoreCase === expected.ignoreCase
         );
-    }
-    if (
+    } else if (
         (actual === null || typeof actual !== 'object') &&
         (expected === null || typeof expected !== 'object')
     ) {
-        // eslint-disable-next-line eqeqeq
         return strict ? actual === expected : actual == expected;
+    } else {
+        return objEquiv(actual, expected, strict);
     }
-    return objEquiv(actual, expected, strict);
 }
 
 function objEquiv(a: any, b: any, strict: boolean): boolean {
@@ -106,20 +105,4 @@ function objEquiv(a: any, b: any, strict: boolean): boolean {
         if (!deepEqual(a[key], b[key], strict)) return false;
     }
     return true;
-}
-
-export function tryFunc(func: Function) {
-    try {
-        return func();
-    } catch (err) {
-        console.error(err);
-    }
-}
-
-export async function tryFuncAsync(func: Function) {
-    try {
-        return await func();
-    } catch (err) {
-        console.error(err);
-    }
 }

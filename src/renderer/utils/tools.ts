@@ -39,6 +39,6 @@ export function hintText(textObj: TextObj[]) {
     EventHub.emit(eventConstant.HINT_TEXT, textObj);
 }
 
-export function hintMainText(text: string) {
+export function hintMainText(text?: string) {
     EventHub.emit(eventConstant.HINT_MAIN_TEXT, text || '');
 }
