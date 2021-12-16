@@ -12,11 +12,12 @@ import { workbenchConfig } from '@/common/constant/config.constant';
 import { debounce, throttle } from '@/common/decorator/decorator';
 import 'reflect-metadata';
 import { isUndefinedOrNull } from '@/common/utils/types';
-import bgimg from '@/renderer/static/image/background03.jpg';
+// import bgimg from '@/renderer/static/image/background03.jpg';
 import { EventHub } from '@/common/eventHub';
 import { eventConstant } from '@/common/constant/event.constant';
 import { command } from '@/common/constant/command.constant';
 import { Gesture } from './utils/gesture';
+import bgimg from '@/renderer/static/image/background01.jpg';
 
 interface ILayoutState {
     fileBarIsShow: boolean;
@@ -96,21 +97,16 @@ class Layout extends React.PureComponent<any, ILayoutState> {
     }
 
     initEvent() {
-        Gesture.registry(
-            window,
-            { mouseType: 'LR' },
-            [{ direction: 'B' }],
-            () => {
-                this.configurationService.upadteUserConfig([
-                    {
-                        id: 'workbench',
-                        key: workbenchConfig.MANAGEBAR_SHOW,
-                        value: false,
-                    },
-                ]);
-                this.setState({ manageBarIsShow: false });
-            }
-        );
+        Gesture.registry({ mouseType: 'LR' }, [{ direction: 'B' }], () => {
+            this.configurationService.upadteUserConfig([
+                {
+                    id: 'workbench',
+                    key: workbenchConfig.MANAGEBAR_SHOW,
+                    value: false,
+                },
+            ]);
+            this.setState({ manageBarIsShow: false });
+        });
 
         // set fullscreen
         document.addEventListener('keydown', (e) => {

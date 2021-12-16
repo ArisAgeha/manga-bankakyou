@@ -62,6 +62,7 @@ export default merge(baseConfig, {
             // Pipe other styles through css modules and append to style.css
             {
                 test: /^((?!\.global).)*\.css$/,
+                exclude: /antd\/dist\/antd\.css/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
@@ -98,6 +99,18 @@ export default merge(baseConfig, {
                             sourceMap: true,
                         },
                     },
+                    {
+                        loader: 'sass-resources-loader',
+                        options: {
+                            // Provide path to the file with resources
+                            resources: [
+                                path.resolve(
+                                    __dirname,
+                                    '../../src/renderer/themes/variable.scss'
+                                ),
+                            ],
+                        },
+                    },
                 ],
             },
             // Add SASS support  - compile all other .scss files and pipe it to style.css
@@ -122,6 +135,18 @@ export default merge(baseConfig, {
                         loader: 'sass-loader',
                         options: {
                             sourceMap: true,
+                        },
+                    },
+                    {
+                        loader: 'sass-resources-loader',
+                        options: {
+                            // Provide path to the file with resources
+                            resources: [
+                                path.resolve(
+                                    __dirname,
+                                    '../../src/renderer/themes/variable.scss'
+                                ),
+                            ],
                         },
                     },
                 ],

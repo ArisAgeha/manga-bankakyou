@@ -46,7 +46,6 @@ export class MainView extends React.PureComponent<
 
     initGesture = () => {
         Gesture.registry(
-            window,
             {
                 mouseType: 'LR',
             },
@@ -59,7 +58,6 @@ export class MainView extends React.PureComponent<
         );
 
         Gesture.registry(
-            window,
             {
                 mouseType: 'LR',
             },
@@ -152,7 +150,6 @@ export class MainView extends React.PureComponent<
     renderTab = (props: { page: Page }) => {
         const { page } = props;
         const isSelected = this.state.currentPage === page.id;
-        const titleI18nModel = '%multipleSources%';
 
         return (
             <div
@@ -167,9 +164,7 @@ export class MainView extends React.PureComponent<
                 }}
             >
                 <div className={`${style.left} text-ellipsis-1`}>
-                    {page.title === '%multipleSources%'
-                        ? t(titleI18nModel)
-                        : page.title}
+                    {page.title}
                 </div>
                 <div
                     className={style.right}

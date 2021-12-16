@@ -1,14 +1,14 @@
+import { isArray } from '@/common/utils/types';
+
 export type GestureHandler = () => void;
 
-export type EventTarget = HTMLElement | Window;
-
-export interface GestureMaps {
+export interface GestureList {
     [key: string]: GestureHandlerItem[];
 }
 
 export type GestureHandlerItem = {
-    dispatchCondition: DispatchCondition[];
     gestureHandler: GestureHandler;
+    gestureAction: GestureAction[];
 };
 
 export type KeyType = {
@@ -19,7 +19,7 @@ export type KeyType = {
 
 export type Direction = 'T' | 'TR' | 'R' | 'RB' | 'B' | 'BL' | 'L' | 'LT';
 
-export interface DispatchCondition {
+export interface GestureAction {
     direction: Direction;
     minDistance?: number;
     maxDistance?: number;
@@ -34,57 +34,18 @@ export type MoveStep = {
 };
 
 class GestureFactory {
-    private refs = new WeakMap<EventTarget, GestureMaps>();
+    gestureList: GestureList = {};
+    isPause = false;
+    MIN_DETECT_DISTANCE = 100;
 
-    private MIN_DETECT_DISTANCE = 100;
-
-    constructor() {}
-
-    registry(
-        target: EventTarget,
-        keyType: KeyType,
-        dispatchCondition: DispatchCondition[],
-        gestureHandler: GestureHandler
-    ) {
-        if (!this.refs.get(target)) this.initListener(target);
-
-        const identifier = this.getIdentifier(keyType);
-        this.saveGestureHandler(
-            target,
-            identifier,
-            dispatchCondition,
-            gestureHandler
-        );
+    constructor() {
+        this.initListener();
     }
 
-    private saveGestureHandler(
-        target: EventTarget,
-        identifier: string,
-        dispatchCondition: DispatchCondition[],
-        gestureHandler: GestureHandler
-    ) {
-        const gestureMaps = this.refs.get(target) as GestureMaps;
-        if (!Array.isArray(gestureMaps[identifier])) {
-            gestureMaps[identifier] = [
-                {
-                    dispatchCondition,
-                    gestureHandler,
-                },
-            ];
-        } else if (
-            !gestureMaps[identifier].some(
-                (handlerStore) => handlerStore.gestureHandler === gestureHandler
-            )
-        ) {
-            gestureMaps[identifier].push({
-                gestureHandler,
-                dispatchCondition,
-            });
-        }
-    }
+    private initListener() {
+        window.addEventListener('mousedown', (downEvent: MouseEvent) => {
+            if (this.isPause) return;
 
-    private initListener<T extends EventTarget>(target: T) {
-        const mousedownHandler = (downEvent: MouseEvent) => {
             const mouseType = this.getMouseTypeFromButtons(downEvent.buttons);
             if (!mouseType) return;
 
@@ -98,7 +59,7 @@ class GestureFactory {
             const moveSlice = { x: 0, y: 0 };
             let timer = 0;
 
-            const mousemoveHandler = (moveEvent: MouseEvent) => {
+            const onMove = (moveEvent: MouseEvent) => {
                 moveSlice.x += moveEvent.movementX;
                 moveSlice.y -= moveEvent.movementY;
 
@@ -133,30 +94,23 @@ class GestureFactory {
                 }
             };
 
-            window.addEventListener('mousemove', mousemoveHandler);
+            window.addEventListener('mousemove', onMove);
             window.addEventListener(
                 'mouseup',
-                () => {
-                    window.removeEventListener('mousemove', mousemoveHandler);
+                (upEvent: MouseEvent) => {
+                    window.removeEventListener('mousemove', onMove);
 
-                    this.checkHandlerList(window, moveStep, keyType);
+                    this.checkHandlerList(moveStep, keyType);
                 },
                 { once: true }
             );
-        };
-
-        target.addEventListener('mousedown', mousedownHandler as any);
+        });
     }
 
-    private checkHandlerList(
-        target: EventTarget,
-        moveStep: MoveStep[],
-        keyType: KeyType
-    ) {
+    private checkHandlerList(moveStep: MoveStep[], keyType: KeyType) {
         const identifier = this.getIdentifier(keyType);
-        const gestureMap = this.refs.get(target) as GestureMaps;
-        const handlerStore = gestureMap[identifier];
-        if (!Array.isArray(handlerStore)) return;
+        const handlerStore = this.gestureList[identifier];
+        if (!isArray(handlerStore)) return;
 
         handlerStore.forEach((handler) => {
             this.checkShouldInvokeHandler(handler, moveStep);
@@ -167,10 +121,10 @@ class GestureFactory {
         handler: GestureHandlerItem,
         realMoveStep: MoveStep[]
     ): void {
-        const { dispatchCondition, gestureHandler } = handler;
-        if (dispatchCondition.length > realMoveStep.length) return;
-        for (let i = 0; i < dispatchCondition.length; i++) {
-            const expectedAction = dispatchCondition[i];
+        const { gestureAction, gestureHandler } = handler;
+        if (gestureAction.length > realMoveStep.length) return;
+        for (let i = 0; i < gestureAction.length; i++) {
+            const expectedAction = gestureAction[i];
             const realAction = realMoveStep[i];
 
             const { direction, maxDistance, maxSpendTime } = expectedAction;
@@ -200,37 +154,90 @@ class GestureFactory {
         }
     }
 
-    private getDirection(deltaX: number, deltaY: number): Direction {
-        if (deltaX === 0) return deltaY > 0 ? 'T' : 'B';
-        if (deltaY === 0) return deltaX > 0 ? 'R' : 'L';
+    registry(
+        keyType: KeyType,
+        gestureAction: GestureAction[],
+        callback: GestureHandler
+    ): void {
+        const identifier = this.getIdentifier(keyType);
+        this.saveGestureHandler(identifier, gestureAction, callback);
+    }
 
+    remove(keyType: KeyType, callback: GestureHandler) {
+        const identifier = this.getIdentifier(keyType);
+        const targetStore = this.gestureList[identifier];
+        if (isArray(targetStore)) {
+            const targetIndex = targetStore.findIndex(
+                (handlerStore) => handlerStore.gestureHandler === callback
+            );
+            if (targetIndex !== -1) targetStore.splice(targetIndex, 1);
+        }
+    }
+
+    pause() {
+        this.isPause = true;
+    }
+
+    resume() {
+        this.isPause = false;
+    }
+
+    private getDirection(x: number, y: number): Direction {
         let direction: Direction = 'T';
         const tan225 = Math.tan((Math.PI / 180) * 22.5); // 0.41
         const tan675 = Math.tan((Math.PI / 180) * 67.5); // 2.4
+        if (x === 0) return y > 0 ? 'T' : 'B';
+        if (y === 0) return x > 0 ? 'R' : 'L';
 
-        const res = deltaY / deltaX;
+        const res = y / x;
 
-        if (deltaY > 0) {
+        if (y > 0) {
             if (res > 0 && res < tan225) direction = 'R';
             else if (res > tan225 && res < tan675) direction = 'TR';
             else if (res > tan675 || res < -tan675) direction = 'T';
             else if (res > -tan675 && res < -tan225) direction = 'LT';
             else direction = 'L';
-        } else if (res > 0 && res < tan225) direction = 'L';
-        else if (res > tan225 && res < tan675) direction = 'BL';
-        else if (res > tan675 || res < -tan675) direction = 'B';
-        else if (res > -tan675 && res < -tan225) direction = 'RB';
-        else direction = 'R';
+        } else {
+            if (res > 0 && res < tan225) direction = 'L';
+            else if (res > tan225 && res < tan675) direction = 'BL';
+            else if (res > tan675 || res < -tan675) direction = 'B';
+            else if (res > -tan675 && res < -tan225) direction = 'RB';
+            else direction = 'R';
+        }
 
         return direction;
     }
 
+    private saveGestureHandler(
+        identifier: string,
+        gestureAction: GestureAction[],
+        gestureHandler: GestureHandler
+    ) {
+        if (!isArray(this.gestureList[identifier])) {
+            this.gestureList[identifier] = [
+                {
+                    gestureAction,
+                    gestureHandler,
+                },
+            ];
+        } else if (
+            !this.gestureList[identifier].some(
+                (handlerStore) => handlerStore.gestureHandler === gestureHandler
+            )
+        ) {
+            this.gestureList[identifier].push({
+                gestureHandler,
+                gestureAction,
+            });
+        }
+    }
+
     private getMouseTypeFromButtons(buttons: number) {
         if (buttons === 1) return 'L';
-        if (buttons === 2) return 'R';
-        if (buttons === 3) return 'LR';
-        if (buttons === 4) return 'M';
-        return null;
+        else if (buttons === 2) return 'R';
+        else if (buttons === 3) return 'LR';
+        else if (buttons === 4) return 'M';
+        else return null;
     }
 
     private getIdentifier(keyType: KeyType) {

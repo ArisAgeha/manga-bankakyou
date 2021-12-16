@@ -82,6 +82,7 @@ const test = merge(baseConfig, {
             },
             {
                 test: /^((?!\.global).)*\.css$/,
+                exclude: /antd\/dist\/antd\.css/,
                 use: [
                     {
                         loader: 'style-loader',
@@ -152,6 +153,18 @@ const test = merge(baseConfig, {
                     },
                     {
                         loader: 'sass-loader',
+                    },
+                    {
+                        loader: 'sass-resources-loader',
+                        options: {
+                            // Provide path to the file with resources
+                            resources: [
+                                path.resolve(
+                                    __dirname,
+                                    '../../src/renderer/themes/variable.scss'
+                                ),
+                            ],
+                        },
                     },
                 ],
             },
@@ -249,7 +262,7 @@ const test = merge(baseConfig, {
         watchOptions: {
             aggregateTimeout: 300,
             ignored: /node_modules/,
-            poll: 100,
+            // poll: 100,
         },
         historyApiFallback: {
             verbose: true,
