@@ -13,26 +13,20 @@ import { processConfig } from './common/constant/config.constant';
 bootStrap();
 
 async function bootStrap() {
-    const services: Services = remote.getGlobal('services');
-
-    const configurationService: ConfigurationService = services.configuration;
-    const languageSetting: string = configurationService.getValue(
-        'process',
-        processConfig.LOCALE_LANGUAGE
-    ) as string;
-    await initI18n(languageSetting);
-
-    // init nedb
-    await db.collection?.load();
-    // db.directory.ensureIndex({ fieldName: 'url', unique: true });
-
     try {
-        const defaultLng = (await services.configuration!.getValue(
-            'i18n',
-            'default_lng'
-        )) as string;
+        const services: Services = remote.getGlobal('services');
 
-        await initI18n(defaultLng || 'zh-cn');
+        const configurationService: ConfigurationService =
+            services.configuration;
+        const languageSetting: string = configurationService.getValue(
+            'process',
+            processConfig.LOCALE_LANGUAGE
+        ) as string;
+        await initI18n(languageSetting);
+
+        // init nedb
+        await db.collection?.load();
+        // db.directory.ensureIndex({ fieldName: 'url', unique: true });
 
         render(<App />, document.getElementById('root'));
     } catch (err) {

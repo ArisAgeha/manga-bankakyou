@@ -1,0 +1,53 @@
+.toolsBarWrapper {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid $borderColor;
+
+    .top,
+    .button {
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: $svgColor;
+            transition: 0.2s;
+        }
+
+        .item.isActive {
+            color: $svgActiveColor;
+            background-color: #fff;
+            transition: 0s;
+        }
+
+        .item:hover {
+            color: $svgActiveColor;
+            transition: 0s;
+        }
+    }
+}
+
+.updateButton {
+    color: #fff;
+    background-color: rgb(255, 0, 200);
+    border: none;
+    font-size: 12px;
+}
+
+.updateButton:focus {
+    color: #fff;
+    background-color: rgb(255, 0, 200);
+    border: none;
+}
+
+.updateButton.active,
+.updateButton:hover {
+    color: #fff;
+    transition: 0s;
+    background-color: rgba(255, 0, 200, 0.7);
+    border: none;
+}

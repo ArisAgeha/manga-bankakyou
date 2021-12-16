@@ -1,49 +1,44 @@
-import { notification, message } from 'antd';
-import { isString } from '../../common/utils/types';
+import { notification } from 'antd';
+import { emptyCall } from '@/common/utils/functionTools';
+import { isUndefinedOrNull } from '@/common/utils/types';
+import { EventHub } from '@/common/eventHub';
+import { eventConstant } from '@/common/constant/event.constant';
+import { TextObj } from '../parts/infoBar/infoBar';
 
 type NotificationOptions = {
-    msg: string;
-    desc?: string | React.ReactNode;
     closeOtherNotification?: boolean;
     duration?: number;
     btn?: React.ReactNode;
-    type?: 'success' | 'info' | 'warning' | 'error' | '';
 };
 
-export const notify = (options: NotificationOptions) => {
-    const {
-        msg,
-        desc = '',
-        closeOtherNotification = true,
-        duration = 1.2,
-        btn = null,
-        type = '',
-    } = options;
+export const openNotification = (
+    title: string,
+    description?: string | React.ReactNode,
+    options?: NotificationOptions
+) => {
+    const closeOtherNotification = isUndefinedOrNull(
+        options?.closeOtherNotification
+    )
+        ? true
+        : options?.closeOtherNotification;
+    const duration = isUndefinedOrNull(options?.duration)
+        ? 1.2
+        : options?.duration;
+    const btn = isUndefinedOrNull(options?.btn) ? null : options?.btn;
 
-    if (closeOtherNotification) notification.destroy();
-
-    const notifyParams = {
+    closeOtherNotification ? notification.destroy() : emptyCall();
+    notification.open({
         duration,
-        message: msg,
-        description: desc,
+        message: title,
+        description,
         btn,
-    };
-    if (type) {
-        notification[type](notifyParams);
-    } else {
-        notification.open(notifyParams);
-    }
+    });
 };
 
-type MsgType = 'success' | 'info' | 'warning' | 'error';
+export function hintText(textObj: TextObj[]) {
+    EventHub.emit(eventConstant.HINT_TEXT, textObj);
+}
 
-export const msg = (msg: string, type: MsgType = 'info') => {
-    if (isString(msg)) message[type](msg);
-
-    try {
-        if (isString(msg)) console.log(msg);
-        else console.log(JSON.parse(JSON.stringify(msg)));
-    } catch (err) {
-        console.log(msg);
-    }
-};
+export function hintMainText(text: string) {
+    EventHub.emit(eventConstant.HINT_MAIN_TEXT, text || '');
+}

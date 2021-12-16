@@ -115,6 +115,18 @@ const test = merge(baseConfig, {
                     {
                         loader: 'sass-loader',
                     },
+                    {
+                        loader: 'sass-resources-loader',
+                        options: {
+                            // Provide path to the file with resources
+                            resources: [
+                                path.resolve(
+                                    __dirname,
+                                    '../../src/renderer/themes/variable.scss'
+                                ),
+                            ],
+                        },
+                    },
                 ],
             },
             // SASS support - compile all other .scss files and pipe it to style.css

@@ -26,6 +26,7 @@ export function injectable(_constructor: Function) {
 export function createInstance<T>(_constructor: new (...args: any[]) => T): T {
     const paramsTypes: Function[] =
         Reflect.getMetadata('design:paramtypes', _constructor) || [];
+
     const paramInstances = paramsTypes.map((v, i) => {
         if (classPool.indexOf(v) === -1)
             throw new Error(

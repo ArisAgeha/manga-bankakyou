@@ -1,0 +1,61 @@
+.mainView {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .tabsWrapper {
+        height: 35px;
+        min-height: 35px;
+        display: flex;
+        width: 100%;
+        overflow: scroll;
+        border-bottom: 1px solid $borderColor;
+
+        .tabsItem {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            color: #fff;
+            border-right: 1px solid $borderColor;
+            min-width: 120px;
+            max-width: 240px;
+            transition: 0.15s ease-in-out;
+            flex-shrink: 0;
+
+            .left {
+                padding-right: 10px;
+            }
+
+            .right {
+                .closeWrapper {
+                    transition: 0.15s ease-in-out;
+                    color: rgba(255, 255, 255, 0);
+                }
+            }
+        }
+
+        .tabsItem:hover {
+            background-color: $tabBgColorHover;
+            color: $fontColorActive;
+            cursor: pointer;
+
+            .right {
+                .closeWrapper {
+                    color: $fontColorActive;
+                }
+            }
+        }
+
+        .tabsItem.isSelected {
+            background-color: $tabBgColorActive;
+            color: $fontColorActive;
+        }
+    }
+
+    .displayArea {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+}

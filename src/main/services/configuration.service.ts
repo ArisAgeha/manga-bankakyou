@@ -1,8 +1,8 @@
-import { injectable } from '@/common/decorator/injectable';
-import { isObject, getTypeof } from '@/common/utils/types';
+import { injectable } from '../../common/decorator/injectable';
+import { isObject, getTypeof } from '../../common/utils/types';
 import { FileService } from './file.service';
 import { LogService } from './log.service';
-import { throttle, debounce } from '@/common/decorator/decorator';
+import { debounce } from '../../common/decorator/decorator';
 
 @injectable
 export class ConfigurationService {
@@ -30,7 +30,7 @@ export class ConfigurationService {
         const moduleConfig: ISingleConfigModule = this.getConfigById(id);
         const item = moduleConfig[itemName];
         if (!item) this.logService.error(`cant find value: ${id}-${itemName}`);
-        return item.hasOwnProperty('value') ? item.value : item.default;
+        return item?.hasOwnProperty('value') ? item.value : item.default;
     }
 
     upadteUserConfig(
@@ -90,7 +90,8 @@ export class ConfigurationService {
         const configBundleName = ['process', 'windows', 'workbench'];
 
         configBundleName.forEach((filename: string) => {
-            const fileContent = require(`@/configuration/default/${filename}.json`);
+            const fileContent = require(`../../configuration/default/${filename}.json`);
+            console.log(fileContent);
             config[fileContent.id] = fileContent.properties;
         });
 

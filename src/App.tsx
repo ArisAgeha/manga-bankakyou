@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Layout } from './renderer/Layout';
 
 const Hello = () => {
     return (
@@ -27,7 +28,7 @@ export default function App() {
         <div>
             <Router>
                 <Switch>
-                    <Route path="/" component={Hello} />
+                    <Route path="/" component={Layout} />
                 </Switch>
             </Router>
         </div>
