@@ -1,5 +1,5 @@
 import { notification, message } from 'antd';
-import { isString } from '../../common/utils/typesUtils';
+import { isString } from '../../common/utils/types';
 
 type NotificationOptions = {
     msg: string;

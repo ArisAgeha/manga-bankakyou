@@ -24,10 +24,12 @@ const Hello = () => {
 
 export default function App() {
     return (
-        <Router>
-            <Switch>
-                <Route path="/" component={Hello} />
-            </Switch>
-        </Router>
+        <div>
+            <Router>
+                <Switch>
+                    <Route path="/" component={Hello} />
+                </Switch>
+            </Router>
+        </div>
     );
 }

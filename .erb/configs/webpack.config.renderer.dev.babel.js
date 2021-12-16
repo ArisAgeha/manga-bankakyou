@@ -37,7 +37,7 @@ if (
     execSync('yarn build-dll');
 }
 
-export default merge(baseConfig, {
+const test = merge(baseConfig, {
     devtool: 'inline-source-map',
     mode: 'development',
     target: 'electron-renderer',
@@ -255,3 +255,5 @@ export default merge(baseConfig, {
         },
     },
 });
+
+export default test;

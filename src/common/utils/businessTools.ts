@@ -1,4 +1,4 @@
-import { isArray, isString } from './typesUtils';
+import { isArray, isString } from './types';
 
 export function isPicture(fileOrDirUrl: string): boolean {
     return [

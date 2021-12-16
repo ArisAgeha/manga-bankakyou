@@ -25,6 +25,9 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': 'off',
         'global-require': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        'import/order': 'off',
+        'prefer-template': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

@@ -10,19 +10,25 @@ import {
 ChokidarService;
 
 export type Services = {
-    chokidar: ChokidarService | null;
-    configuration: ConfigurationService | null;
-    file: FileService | null;
-    environment: EnvironmentService | null;
-    log: LogService | null;
-    ipc: IpcService | null;
+    chokidar: ChokidarService;
+    configuration: ConfigurationService;
+    file: FileService;
+    environment: EnvironmentService;
+    log: LogService;
+    ipc: IpcService;
 };
 
 export const services: Services = {
-    chokidar: null,
-    configuration: null,
-    file: null,
-    environment: null,
-    log: null,
-    ipc: null,
+    // @ts-ignore
+    chokidar: undefined,
+    // @ts-ignore
+    configuration: undefined,
+    // @ts-ignore
+    file: undefined,
+    // @ts-ignore
+    environment: undefined,
+    // @ts-ignore
+    log: undefined,
+    // @ts-ignore
+    ipc: undefined,
 };

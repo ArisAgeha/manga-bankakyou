@@ -5,7 +5,7 @@ import {
     isPrimitive,
     isArguments,
     isArray,
-} from './typesUtils';
+} from './types';
 
 export function toCamelCase(str: string, mark = '_') {
     const regexp = new RegExp(`${mark}\\w`, 'g');

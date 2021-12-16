@@ -2,7 +2,7 @@ import { BrowserWindow, app } from 'electron';
 import { injectable } from '../../common/decorator/injectable';
 import { FileService } from './file.service';
 import { ConfigurationService } from './configuration.service';
-import { isBoolean } from '../../common/utils/typesUtils';
+import { isBoolean } from '../../common/utils/types';
 
 @injectable
 export class IpcService {
@@ -18,6 +18,6 @@ export class IpcService {
         const setVal = isBoolean(setToFullscreen)
             ? setToFullscreen
             : !window.isFullScreen();
-        window.setFullScreen(setVal);
+        window.setFullScreen(setVal as boolean);
     };
 }

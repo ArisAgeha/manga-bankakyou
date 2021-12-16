@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES2018",
-        "module": "CommonJS",
+        "module": "es2015",
         "lib": ["dom", "esnext"],
         "declaration": true,
         "declarationMap": true,
@@ -24,9 +24,13 @@
         /* decorators */
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "baseUrl": "./",
+        "baseUrl": ".",
         "paths": {
-            "*": ["node_modules/*"]
+            "*": ["node_modules/*"],
+            "@/*": ["src/*"],
+            "common/*": ["src/common/*"],
+            "main/*": ["src/main*"],
+            "renderer/*": ["src/renderer*"]
         }
     },
     "exclude": [

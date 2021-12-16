@@ -34,9 +34,14 @@ export default {
      * Determine the array of extensions that should be used to resolve modules.
      */
     resolve: {
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+        extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
         modules: [path.join(__dirname, '../src'), 'node_modules'],
-        alias: {},
+        alias: {
+            '@': path.resolve(__dirname, '../../src'),
+            renderer: path.resolve(__dirname, '../../src/renderer'),
+            main: path.resolve(__dirname, '../../src/main'),
+            common: path.resolve(__dirname, '../../src/common'),
+        },
     },
 
     plugins: [

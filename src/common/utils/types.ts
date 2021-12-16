@@ -1,78 +1,78 @@
 // tslint:disable-next-line: typedef
-const typeofString = {
+const _typeof = {
     number: 'number',
     string: 'string',
     undefined: 'undefined',
     object: 'object',
-    function: 'function',
+    function: 'function'
 };
 
 /**
  * @returns whether the provided parameter is a JavaScript Array or not.
  */
-export function isArray(array: any): boolean {
+export function isArray(array: any): array is any[] {
     if (Array.isArray) {
         return Array.isArray(array);
     }
 
-    if (
-        array &&
-        typeof array.length === typeofString.number &&
-        array.constructor === Array
-    ) {
+    if (array && typeof array.length === _typeof.number && array.constructor === Array) {
         return true;
     }
 
     return false;
 }
 
-export function isString(str: any): boolean {
-    if (typeof str === typeofString.string || str instanceof String) {
+export function isString(str: any): str is string {
+    if (typeof str === _typeof.string || str instanceof String) {
         return true;
     }
 
     return false;
 }
 
-export function isStringArray(value: any): boolean {
+export function isStringArray(value: any): value is string[] {
     return isArray(value) && value.every(isString);
 }
 
-export function isObject(obj: any): boolean {
-    return (
-        typeof obj === typeofString.object &&
-        obj !== null &&
-        !Array.isArray(obj) &&
-        !(obj instanceof RegExp) &&
-        !(obj instanceof Date)
-    );
+export function isObject(obj: any): obj is object {
+    return typeof obj === _typeof.object && obj !== null && !Array.isArray(obj) && !(obj instanceof RegExp) && !(obj instanceof Date);
 }
 
-export function isNumber(obj: any): boolean {
-    if (
-        (typeof obj === typeofString.number || obj instanceof Number) &&
-        !Number.isNaN(obj)
-    ) {
+export function isNumber(obj: any): obj is number {
+    if ((typeof obj === _typeof.number || obj instanceof Number) && !isNaN(obj)) {
         return true;
     }
 
     return false;
 }
 
-export function isBoolean(obj: any): boolean {
+export function isBoolean(obj: any): obj is boolean {
     return obj === true || obj === false;
 }
 
-export function isUndefined(obj: any): boolean {
-    return typeof obj === typeofString.undefined;
+export function isUndefined(obj: any): obj is undefined {
+    return typeof obj === _typeof.undefined;
 }
 
-export function isUndefinedOrNull(obj: any): boolean {
+export function isUndefinedOrNull(obj: any): obj is undefined | null {
     return isUndefined(obj) || obj === null;
 }
+export function assertType(condition: any, type?: string): asserts condition {
+    if (!condition) {
+        throw new Error(type ? `Unexpected type, expected '${type}'` : 'Unexpected type');
+    }
+}
 
-export function isEmptyObject(obj: any): boolean {
-    const { hasOwnProperty } = Object.prototype;
+export function assertIsDefined<T>(arg: T | null | undefined): T {
+    if (isUndefinedOrNull(arg)) {
+        throw new Error('Assertion Failed: argument is undefined or null');
+    }
+
+    return arg;
+}
+
+export function isEmptyObject(obj: any): obj is any {
+    const hasOwnProperty: any = Object.prototype.hasOwnProperty;
     if (!isObject(obj)) {
         return false;
     }
@@ -86,8 +86,8 @@ export function isEmptyObject(obj: any): boolean {
     return true;
 }
 
-export function isFunction(obj: any): boolean {
-    return typeof obj === typeofString.function;
+export function isFunction(obj: any): obj is Function {
+    return typeof obj === _typeof.function;
 }
 
 export function areFunctions(...objects: any[]): boolean {
@@ -148,16 +148,14 @@ export function isRegExp(re: any) {
 }
 
 export function isPrimitive(arg: any) {
-    return (
-        arg === null ||
+    return arg === null ||
         typeof arg === 'boolean' ||
         typeof arg === 'number' ||
         typeof arg === 'string' ||
         typeof arg === 'symbol' ||
-        typeof arg === 'undefined'
-    );
+        typeof arg === 'undefined';
 }
 
 export function isArguments(object: any) {
-    return Object.prototype.toString.call(object) === '[object Arguments]';
+    return Object.prototype.toString.call(object) == '[object Arguments]';
 }

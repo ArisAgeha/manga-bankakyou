@@ -1,4 +1,4 @@
-import { isNumber } from '../utils/typesUtils';
+import { isNumber } from '../utils/types';
 
 /**
  * flagsPosition: if `flagsPosition` is defined and its value >= 0
@@ -15,6 +15,7 @@ export function debounce<T>(
         return function (this: any, ...args: any[]): void {
             if (
                 isNumber(options?.flagsPostition) &&
+                options.flagsPostition !== undefined &&
                 options.flagsPostition >= 0
             ) {
                 timerKey = `$debounce$${key}-${args[options.flagsPostition]}`;
