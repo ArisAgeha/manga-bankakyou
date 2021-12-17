@@ -3,6 +3,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: $mainViewColor;
 
     .tabsWrapper {
         height: 35px;
@@ -10,13 +11,14 @@
         display: flex;
         width: 100%;
         overflow: scroll;
-        border-bottom: 1px solid $borderColor;
+        border-bottom: 1px solid $tagBarBorderColor;
+        background-color: $tagBarColor;
 
         .tabsItem {
             display: flex;
             justify-content: space-between;
             padding: 5px;
-            color: #fff;
+            color: $tagFontColor;
             border-right: 1px solid $borderColor;
             min-width: 120px;
             max-width: 240px;

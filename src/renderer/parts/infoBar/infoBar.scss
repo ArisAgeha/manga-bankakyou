@@ -1,11 +1,12 @@
 .infoWrapper {
     height: 100%;
     width: 100%;
-    border-top: 1px solid $borderColor;
+    // border-top: 1px solid $borderColor;
     padding: 0 12px;
     display: flex;
     justify-content: space-between;
     user-select: none;
+    background-color: $infoBarColor;
 
     .left {
         color: #fff;
@@ -17,7 +18,7 @@
         justify-content: flex-end;
 
         .text {
-            
+
             margin-right: 12px;
             color: #fff;
         }

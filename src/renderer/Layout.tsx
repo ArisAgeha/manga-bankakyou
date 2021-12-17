@@ -277,8 +277,12 @@ class Layout extends React.PureComponent<any, ILayoutState> {
 
         this.layoutValue.fileBarWidth = fileBarWidth;
         this.layoutValue.manageBarHeight = manageBarHeight;
-        this.fileBarRef.current!.style.width = `${fileBarWidth}px`;
-        this.manageBarRef.current!.style.height = `${manageBarHeight}px`;
+
+        if (this.fileBarRef.current)
+            this.fileBarRef.current.style.width = `${fileBarWidth}px`;
+
+        if (this.manageBarRef.current)
+            this.manageBarRef.current.style.height = `${manageBarHeight}px`;
 
         if (Object.values(setStateObj).length !== 0) this.setState(setStateObj);
     }
@@ -346,7 +350,7 @@ class Layout extends React.PureComponent<any, ILayoutState> {
         const layoutStyle: React.CSSProperties = {
             cursor,
             // background: `url(${bgimg})`,
-            backgroundColor: '#7cb2b5',
+            // backgroundColor: '#d9d9d9',
         };
         const fileBarStyle: React.CSSProperties = {
             width: this.layoutValue.fileBarWidth,
@@ -390,16 +394,15 @@ class Layout extends React.PureComponent<any, ILayoutState> {
                             <MainView />
                         </div>
 
-                        <div
+                        {/* <div
                             className={style.gridManageBar}
                             style={manageBarStyle}
                             ref={this.manageBarRef}
                         >
                             <ManageBar />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
-
                 <div
                     className={style.footer}
                     style={{ height: this.state.infoBarHeight }}

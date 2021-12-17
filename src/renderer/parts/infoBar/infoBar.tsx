@@ -40,12 +40,12 @@ class InfoBar extends PureComponent<IInfoBarProps, IInfoBarState> {
         EventHub.on(eventConstant.HINT_TEXT, this.changeText);
         EventHub.on(eventConstant.HINT_MAIN_TEXT, this.changeMainText);
 
-        window.addEventListener('keydown', this.copyByKeydown);
+        // window.addEventListener('keydown', this.copyByKeydown);
     };
 
     removeEvent = () => {
         EventHub.cancel(eventConstant.HINT_TEXT, this.changeText);
-        window.removeEventListener('keydown', this.copyByKeydown);
+        // window.removeEventListener('keydown', this.copyByKeydown);
     };
 
     copyByKeydown = (e: KeyboardEvent) => {

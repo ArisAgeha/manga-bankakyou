@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import style from './FileBar.scss';
+import style from './fileBar.scss';
 
 export interface IFileBarProps {}
 

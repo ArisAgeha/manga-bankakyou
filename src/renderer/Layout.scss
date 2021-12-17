@@ -9,6 +9,7 @@
     background-position: center;
     background-attachment: fixed;
     position: relative;
+    background-color: $layoutBackgroundColor;
 
     .body {
         width: 100%;
@@ -26,7 +27,7 @@
 
             .gridFileBar {
                 height: 100%;
-                border-right: 1px solid #ddd;
+                border-right: 1px solid $borderColor;
             }
         }
 

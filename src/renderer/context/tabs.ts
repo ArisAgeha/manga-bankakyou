@@ -15,11 +15,6 @@ function tabsHooks() {
         return tabsList.find((item) => item.id === activeTabId);
     }, [tabsList, activeTabId]);
 
-    const openTabs = useMemoizedFn((pathname: string, name: string) => {
-        addTabs({ id: pathname, name });
-        setActiveTabId(pathname);
-    });
-
     const removeTabs = useMemoizedFn((id: string | string[]) => {
         const idsArray = Array.isArray(id) ? id : [id];
 
@@ -44,6 +39,11 @@ function tabsHooks() {
         }
 
         setTabsList(newTabsList);
+    });
+
+    const openTabs = useMemoizedFn((pathname: string, name: string) => {
+        addTabs({ id: pathname, name });
+        setActiveTabId(pathname);
     });
 
     return {

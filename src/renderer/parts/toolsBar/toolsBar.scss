@@ -5,7 +5,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-right: 1px solid $borderColor;
+    // border-right: 1px solid $borderColor;
+    background-color: $toolsBarColor;
 
     .top,
     .button {

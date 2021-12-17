@@ -2,6 +2,8 @@
     height: 100%;
     width: 100%;
     color: $fontColor;
+    background-color: $fileBarColor;
+    border-bottom: 1px solid $tagBarBorderColor;
 
     .viewWrapper {
         height: 100%;
