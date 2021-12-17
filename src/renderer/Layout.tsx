@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FileBar } from './parts/fileBar/fileBar';
 import MainView from './parts/mainView/mainView';
 import { ManageBar } from './parts/manageBar/manageBar';
-import { ToolsBar } from './parts/toolsBar/toolsBar';
+import ToolsBar from './parts/toolsBar/toolsBar';
 import { InfoBar } from './parts/infoBar/infoBar';
 import style from './Layout.scss';
 import { Event, app, remote, ipcRenderer } from 'electron';
@@ -345,7 +345,8 @@ class Layout extends React.PureComponent<any, ILayoutState> {
 
         const layoutStyle: React.CSSProperties = {
             cursor,
-            background: `url(${bgimg})`,
+            // background: `url(${bgimg})`,
+            backgroundColor: '#949494',
         };
         const fileBarStyle: React.CSSProperties = {
             width: this.layoutValue.fileBarWidth,

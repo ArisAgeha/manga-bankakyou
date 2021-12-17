@@ -61,13 +61,6 @@ const initService = async () => {
 };
 
 const createWindow = async () => {
-    if (
-        process.env.NODE_ENV === 'development' ||
-        process.env.DEBUG_PROD === 'true'
-    ) {
-        await installExtensions();
-    }
-
     const RESOURCES_PATH = app.isPackaged
         ? path.join(process.resourcesPath, 'resources')
         : path.join(__dirname, '../resources');
@@ -87,6 +80,18 @@ const createWindow = async () => {
             webSecurity: false,
         },
     });
+
+    windowTransport.mainWindow.webContents.on(
+        'did-frame-finish-load',
+        async () => {
+            if (
+                process.env.NODE_ENV === 'development' ||
+                process.env.DEBUG_PROD === 'true'
+            ) {
+                await installExtensions();
+            }
+        }
+    );
 
     windowTransport.mainWindow.loadURL(`file://${__dirname}/index.html`);
 

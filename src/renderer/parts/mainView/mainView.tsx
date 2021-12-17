@@ -181,6 +181,7 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
 
     render(): JSX.Element {
         const Tab = this.renderTab;
+        console.log(window.location.href);
 
         return (
             <div className={`${style.mainView}`}>
@@ -201,6 +202,8 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
                         {routerList.map((item) => {
                             return (
                                 <CacheRoute
+                                    className={style.routeContainer}
+                                    exact
                                     key={item.name}
                                     cacheKey={item.name}
                                     path={item.path}

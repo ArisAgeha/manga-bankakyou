@@ -12,8 +12,9 @@ import {
 import 'reflect-metadata';
 import { isDev } from '@/common/utils/functionTools';
 import { hintMainText } from '@/renderer/utils/tools';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-export interface IToolsBarProps {
+export interface IToolsBarProps extends RouteComponentProps {
     toolsBarWidth: number;
 }
 
@@ -28,7 +29,6 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
 
         this.state = {
             activeIndex: 0,
-            updating: false,
         };
     }
 
@@ -66,26 +66,23 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
                         style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
                     />
                 ),
-                view: 'directory',
                 hintMainText: '',
+                onClick: () => {
+                    console.log(window.location.href);
+                    this.props.history.push('/');
+                },
             },
             {
                 jsx: (
-                    <TagsOutlined
+                    <ProfileOutlined
                         style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
                     />
                 ),
-                view: 'tag',
                 hintMainText: '',
-            },
-            {
-                jsx: (
-                    <TeamOutlined
-                        style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
-                    />
-                ),
-                view: 'author',
-                hintMainText: '',
+                onClick: () => {
+                    console.log(window.location.href);
+                    this.props.history.push('/yapi');
+                },
             },
         ];
 
@@ -102,12 +99,8 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
                             icon={buttonObj.jsx}
                             index={index}
                             shouldActive={true}
-                            onClick={() => {
-                                this.setState({
-                                    activeIndex: index,
-                                });
-                            }}
-                        ></ButtonBox>
+                            onClick={buttonObj.onClick}
+                        />
                     </div>
                 ))}
             </div>
@@ -122,89 +115,19 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
         // TODO
     };
 
-    bottomButton = (props: any): JSX.Element => {
-        const ButtonBox = this.buttonBox;
-
-        const buttons = [
-            // dev
-            {
-                isDev: true,
-                jsx: (
-                    <DeleteOutlined
-                        style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
-                    />
-                ),
-                onClick: async () => {},
-            },
-            {
-                isDev: true,
-                jsx: (
-                    <ToolOutlined
-                        style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
-                    />
-                ),
-                onClick: async () => {},
-            },
-            // import directory button
-            {
-                jsx: (
-                    <SyncOutlined
-                        style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
-                        spin={this.state.updating}
-                    />
-                ),
-                onClick: this.checkUpdate,
-                hintMainText: '',
-            },
-            {
-                jsx: (
-                    <ImportOutlined
-                        style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
-                    />
-                ),
-                onClick: () => {},
-                hintMainText: '',
-            },
-            // setting button
-            // {
-            //     jsx: <SettingOutlined style={{ fontSize: this.props.toolsBarWidth * 0.5 }} />,
-            //     onClick: () => { }
-            // }
-        ];
-
-        const buttonsJSX = buttons
-            .filter(
-                (buttonObj) => (isDev() && buttonObj.isDev) || !buttonObj.isDev
-            )
-            .map((buttonObj, index) => (
-                <div
-                    key={index}
-                    onMouseEnter={() => {
-                        hintMainText(buttonObj.hintMainText);
-                    }}
-                >
-                    <ButtonBox
-                        icon={buttonObj.jsx}
-                        index={index}
-                        shouldActive={false}
-                        onClick={buttonObj.onClick}
-                    ></ButtonBox>
-                </div>
-            ));
-
-        return <div className={style.top}>{buttonsJSX}</div>;
-    };
-
     render(): JSX.Element {
         const TopButton = this.topButton;
-        const BottomButton = this.bottomButton;
+        console.log(this.props.toolsBarWidth);
+
         return (
             <div className={style.toolsBarWrapper}>
                 <TopButton></TopButton>
-                <BottomButton></BottomButton>
             </div>
         );
     }
 }
 
-export { ToolsBar };
+const ToolsBarWithRouter = withRouter(({ ...props }) => {
+    return <ToolsBar {...props} />;
+});
+export default ToolsBarWithRouter;

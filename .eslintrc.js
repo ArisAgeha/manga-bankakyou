@@ -48,6 +48,7 @@ module.exports = {
         'react/jsx-boolean-value': 'off',
         'no-lonely-if': 'off',
         'react/jsx-props-no-spreading': 'off',
+        'no-empty-pattern': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,
