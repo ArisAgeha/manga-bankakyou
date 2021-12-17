@@ -1,26 +1,18 @@
 import React, { PureComponent } from 'react';
 import style from './toolsBar.scss';
-import {
-    ProfileOutlined,
-    ImportOutlined,
-    TagsOutlined,
-    ToolOutlined,
-    DeleteOutlined,
-    TeamOutlined,
-    SyncOutlined,
-} from '@ant-design/icons';
+import { ProfileOutlined } from '@ant-design/icons';
 import 'reflect-metadata';
-import { isDev } from '@/common/utils/functionTools';
 import { hintMainText } from '@/renderer/utils/tools';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { TabsContainer } from '../../context/tabs';
 
 export interface IToolsBarProps extends RouteComponentProps {
     toolsBarWidth: number;
+    openTabs(pathname: string, name: string): void;
 }
 
 export interface IToolsBarState {
     activeIndex: number;
-    updating: boolean;
 }
 
 class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
@@ -28,7 +20,7 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
         super(props);
 
         this.state = {
-            activeIndex: 0,
+            activeIndex: -1,
         };
     }
 
@@ -70,6 +62,7 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
                 onClick: () => {
                     console.log(window.location.href);
                     this.props.history.push('/');
+                    this.props.openTabs('/', '首页');
                 },
             },
             {
@@ -82,6 +75,7 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
                 onClick: () => {
                     console.log(window.location.href);
                     this.props.history.push('/yapi');
+                    this.props.openTabs('/yapi', 'yapi工具');
                 },
             },
         ];
@@ -127,7 +121,15 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
     }
 }
 
-const ToolsBarWithRouter = withRouter(({ ...props }) => {
-    return <ToolsBar {...props} />;
-});
-export default ToolsBarWithRouter;
+function ToolsBarWithRouter(ToolsBarIns: typeof ToolsBar) {
+    return function WrappedComponent(props: IToolsBarProps) {
+        const TabsState = TabsContainer.useContainer();
+        const { openTabs } = TabsState;
+
+        const history = useHistory();
+
+        return <ToolsBarIns {...props} history={history} openTabs={openTabs} />;
+    };
+}
+
+export default ToolsBarWithRouter(ToolsBar);

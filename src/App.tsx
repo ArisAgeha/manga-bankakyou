@@ -1,12 +1,14 @@
 import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
+import { TabsContainer } from './renderer/context/tabs';
 import Layout from './renderer/Layout';
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 export default function App() {
     return (
         <Router>
-            <Layout />
+            <TabsContainer.Provider>
+                <Layout />
+            </TabsContainer.Provider>
         </Router>
     );
 }

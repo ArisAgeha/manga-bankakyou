@@ -3,23 +3,19 @@ import { CloseOutlined } from '@ant-design/icons';
 import style from './mainView.scss';
 import { Gesture } from '@/renderer/utils/gesture';
 import CacheRoute, { CacheSwitch } from 'react-router-cache-route';
-import { withRouter, RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory, useLocation } from 'react-router';
 
 import { routerList } from '../../router';
+import { Tabs, TabsContainer } from '../../context/tabs';
 
-export interface IMainViewProps extends RouteComponentProps {}
-
-export interface IMainViewState {
-    pages: Page[];
-    currentPage: Page['id'] | null;
+export interface IMainViewProps extends RouteComponentProps {
+    tabsList: Tabs[];
+    removeTabs(ids: string | string[]): void;
+    activeTabId?: string;
+    setActiveTabId(val: string): void;
 }
 
-export type Page = {
-    id: string;
-    title: string;
-    // type: 'gallery' | 'picture';
-    data: any[]; // TODO
-};
+export interface IMainViewState {}
 
 export type LoadPictureRequest = {
     id: string;
@@ -35,14 +31,17 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
         super(props);
 
         this.tabRef = React.createRef();
-        this.state = {
-            pages: [],
-            currentPage: null,
-        };
+        this.state = {};
     }
 
     componentDidMount() {
         this.initGesture();
+    }
+
+    componentDidUpdate(prevProps: IMainViewProps) {
+        if (prevProps.location.pathname !== this.props.location.pathname) {
+            this.props.setActiveTabId(this.props.location.pathname);
+        }
     }
 
     initGesture = () => {
@@ -72,71 +71,59 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
     };
 
     goToPrevTab = () => {
-        if (!this.state.currentPage) return;
-        const currentPageIndex = this.state.pages.findIndex(
-            (page) => page.id === this.state.currentPage
+        const { activeTabId, tabsList, setActiveTabId } = this.props;
+        const targetIndex = this.props.tabsList.findIndex(
+            (tab) => tab.id === activeTabId
         );
-        const prevIndex =
-            currentPageIndex === 0
-                ? this.state.pages.length - 1
-                : currentPageIndex - 1;
-        const prevPageId = this.state.pages[prevIndex].id;
-        this.switchToTab(prevPageId);
+        if (targetIndex === -1) return;
+        const nextIndex =
+            targetIndex === 0 ? tabsList.length - 1 : targetIndex - 1;
+
+        const prevTarget = tabsList[nextIndex];
+
+        setActiveTabId(prevTarget.id);
     };
 
     goToNextTab = () => {
-        if (!this.state.currentPage) return;
-        const currentPageIndex = this.state.pages.findIndex(
-            (page) => page.id === this.state.currentPage
+        const { activeTabId, tabsList, setActiveTabId } = this.props;
+        const targetIndex = this.props.tabsList.findIndex(
+            (tab) => tab.id === activeTabId
         );
-        const nextPageIndex =
-            currentPageIndex >= this.state.pages.length - 1
-                ? 0
-                : currentPageIndex + 1;
-        const nextPageId = this.state.pages[nextPageIndex].id;
-        this.switchToTab(nextPageId);
+        if (targetIndex === -1) return;
+        const nextIndex =
+            targetIndex === tabsList.length - 1 ? 0 : targetIndex + 1;
+
+        const nextTarget = tabsList[nextIndex];
+
+        setActiveTabId(nextTarget.id);
     };
 
     componentWillUnmount() {}
 
     handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Tab' && e.ctrlKey) {
-            if (!this.state.currentPage) return;
+            if (!this.props.activeTabId) return;
             this.goToNextTab();
         } else if (e.key === 'Tab' && e.shiftKey) {
-            if (!this.state.currentPage) return;
+            if (!this.props.activeTabId) return;
             this.goToPrevTab();
         }
 
         if (e.ctrlKey && e.key.toLowerCase() === 'w') {
-            if (!this.state.currentPage) return;
-            this.closeTab(this.state.currentPage);
+            if (!this.props.activeTabId) return;
+            this.closeTab(this.props.activeTabId);
         }
     };
 
     switchToTab(id: string) {
-        this.setState({ currentPage: id });
+        this.props.setActiveTabId(id);
+        this.props.history.push(id);
     }
 
     closeTab(id: string, event?: React.MouseEvent) {
+        const { removeTabs } = this.props;
         if (event) event.stopPropagation();
-
-        let currentPage = this.state.currentPage;
-        const closeIndex = this.state.pages.findIndex((page) => page.id === id);
-        if (this.state.pages[closeIndex].id === currentPage) {
-            if (this.state.pages.length === 1) currentPage = null;
-            else if (this.state.pages.length > 1 && closeIndex >= 1)
-                currentPage = this.state.pages[closeIndex - 1].id;
-            else currentPage = this.state.pages[closeIndex + 1].id;
-        }
-
-        const newPages = [...this.state.pages];
-        newPages.splice(closeIndex, 1);
-
-        this.setState({
-            pages: newPages,
-            currentPage,
-        });
+        removeTabs(id);
     }
 
     handleWheelMoveOnTabBar = (event: React.WheelEvent) => {
@@ -148,28 +135,30 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
         if (e.button === 1) this.closeTab(id, e);
     }
 
-    renderTab = (props: { page: Page }) => {
-        const { page } = props;
-        const isSelected = this.state.currentPage === page.id;
+    renderTab = (props: { tab: Tabs }) => {
+        const { tab } = props;
+        const isSelected = this.props.activeTabId === tab.id;
+        console.log(tab);
+        console.log(this.props.activeTabId);
 
         return (
             <div
-                onClick={() => this.switchToTab(page.id)}
+                onClick={() => this.switchToTab(tab.id)}
                 onWheel={this.handleWheelMoveOnTabBar}
                 className={`${style.tabsItem} ${
                     isSelected ? style.isSelected : ''
                 }`}
-                key={page.id}
+                key={tab.id}
                 onMouseUp={(e: React.MouseEvent) => {
-                    this.handleMouseUp(e, page.id);
+                    this.handleMouseUp(e, tab.id);
                 }}
             >
                 <div className={`${style.left} text-ellipsis-1`}>
-                    {page.title}
+                    {tab.name}
                 </div>
                 <div
                     className={style.right}
-                    onClick={(e) => this.closeTab(page.id, e)}
+                    onClick={(e) => this.closeTab(tab.id, e)}
                 >
                     <div className={style.closeWrapper}>
                         <CloseOutlined />
@@ -181,7 +170,7 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
 
     render(): JSX.Element {
         const Tab = this.renderTab;
-        console.log(window.location.href);
+        const { tabsList } = this.props;
 
         return (
             <div className={`${style.mainView}`}>
@@ -190,13 +179,14 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
                     className={`${style.tabsWrapper} no-scrollbar`}
                     ref={this.tabRef}
                     style={{
-                        display: this.state.pages.length > 0 ? 'flex' : 'none',
+                        display: tabsList.length > 0 ? 'flex' : 'none',
                     }}
                 >
-                    {this.state.pages.map((page) => (
-                        <Tab key={page.id} page={page} />
+                    {this.props.tabsList.map((tab) => (
+                        <Tab key={tab.id} tab={tab} />
                     ))}
                 </div>
+
                 <div className={`${style.displayArea}`}>
                     <CacheSwitch>
                         {routerList.map((item) => {
@@ -218,8 +208,26 @@ class MainView extends React.PureComponent<IMainViewProps, IMainViewState> {
     }
 }
 
-const MainViewWithRouter = withRouter(({ history, ...props }) => {
-    return <MainView {...props} history={history} />;
-});
+function MainViewWithRouterAndContext(MainViewIns: typeof MainView) {
+    return function WrappedComponent(props: IMainViewProps) {
+        const TabsState = TabsContainer.useContainer();
+        const { tabsList, removeTabs, activeTabId, setActiveTabId } = TabsState;
 
-export default MainViewWithRouter;
+        const history = useHistory();
+        const location = useLocation();
+
+        return (
+            <MainViewIns
+                {...props}
+                location={location}
+                history={history}
+                tabsList={tabsList}
+                removeTabs={removeTabs}
+                activeTabId={activeTabId}
+                setActiveTabId={setActiveTabId}
+            />
+        );
+    };
+}
+
+export default MainViewWithRouterAndContext(MainView);

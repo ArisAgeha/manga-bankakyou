@@ -346,7 +346,7 @@ class Layout extends React.PureComponent<any, ILayoutState> {
         const layoutStyle: React.CSSProperties = {
             cursor,
             // background: `url(${bgimg})`,
-            backgroundColor: '#949494',
+            backgroundColor: '#7cb2b5',
         };
         const fileBarStyle: React.CSSProperties = {
             width: this.layoutValue.fileBarWidth,

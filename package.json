@@ -205,6 +205,8 @@
         "husky": "^4.2.5",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.1.0",
+        "less": "^4.1.2",
+        "less-loader": "^10.2.0",
         "lint-staged": "^10.2.11",
         "mini-css-extract-plugin": "^1.3.1",
         "node-sass": "^5.0.0",
@@ -229,6 +231,7 @@
     "dependencies": {
         "@ant-design/icons": "^4.3.0",
         "@loadable/component": "^5.15.2",
+        "ahooks": "^3.0.5",
         "antd": "^4.17.3",
         "axios": "^0.21.0",
         "electron-debug": "^3.1.0",
@@ -246,7 +249,8 @@
         "reflect-metadata": "^0.1.13",
         "regenerator-runtime": "^0.13.5",
         "sass-resources-loader": "^2.0.1",
-        "source-map-support": "^0.5.19"
+        "source-map-support": "^0.5.19",
+        "unstated-next": "^1.1.0"
     },
     "devEngines": {
         "node": ">=10.x",
