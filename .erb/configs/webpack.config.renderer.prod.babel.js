@@ -49,7 +49,7 @@ export default merge(baseConfig, {
                 test: /\.global\.css$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader,
+                        loader: 'style-loader',
                     },
                     {
                         loader: 'css-loader',
@@ -65,7 +65,7 @@ export default merge(baseConfig, {
                 exclude: /antd\/dist\/antd\.css/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader,
+                        loader: 'style-loader',
                     },
                     {
                         loader: 'css-loader',
@@ -84,7 +84,7 @@ export default merge(baseConfig, {
                 test: /\.global\.(scss|sass)$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader,
+                        loader: 'style-loader',
                     },
                     {
                         loader: 'css-loader',
@@ -118,7 +118,7 @@ export default merge(baseConfig, {
                 test: /^((?!\.global).)*\.(scss|sass)$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader,
+                        loader: 'style-loader',
                     },
                     {
                         loader: 'css-loader',

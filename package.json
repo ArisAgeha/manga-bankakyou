@@ -93,14 +93,11 @@
     "license": "MIT",
     "keywords": [
         "electron",
-        "manga-reader",
         "react",
         "typescript",
         "ts",
         "sass",
         "webpack",
-        "hot",
-        "reload"
     ],
     "jest": {
         "testURL": "http://localhost/",
