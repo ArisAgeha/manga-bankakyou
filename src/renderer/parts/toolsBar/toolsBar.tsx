@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import style from './toolsBar.scss';
-import { ProfileOutlined } from '@ant-design/icons';
+import { ProfileOutlined, ToolOutlined } from '@ant-design/icons';
 import 'reflect-metadata';
 import { hintMainText } from '@/renderer/utils/tools';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
@@ -67,7 +67,7 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
             },
             {
                 jsx: (
-                    <ProfileOutlined
+                    <ToolOutlined
                         style={{ fontSize: this.props.toolsBarWidth * 0.5 }}
                     />
                 ),
@@ -75,7 +75,7 @@ class ToolsBar extends PureComponent<IToolsBarProps, IToolsBarState> {
                 onClick: () => {
                     console.log(window.location.href);
                     this.props.history.push('/yapi');
-                    this.props.openTabs('/yapi', 'yapi工具');
+                    this.props.openTabs('/yapi', 'yapi转换TS工具');
                 },
             },
         ];
